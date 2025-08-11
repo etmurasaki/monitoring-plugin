@@ -71,7 +71,7 @@ import { Alerts } from '../types';
 import { alertDescription, RuleResource } from '../utils';
 import { useAlertsPoller } from '../hooks/useAlertsPoller';
 
-import { AlertRulesDetailsPageTestIDs } from '../data-test';
+import { DataTestIDs } from '../data-test';
 
 // Renders Prometheus template text and highlights any {{ ... }} tags that it contains
 const PrometheusTemplate = ({ text }) => (
@@ -112,7 +112,7 @@ export const ActiveAlerts: React.FC<ActiveAlertsProps> = ({ alerts, namespace, r
           <Tr key={i}>
             <Td>
               <Link
-                data-test={AlertRulesDetailsPageTestIDs.ActiveAlerts.Description}
+                data-test={DataTestIDs.AlertResourceLink}
                 to={getAlertUrl(perspective, a, ruleID, namespace)}
               >
                 {alertDescription(a)}
@@ -194,7 +194,7 @@ const AlertRulesDetailsPage_: React.FC = () => {
               <BreadcrumbItem>
                 <Link
                   to={getAlertRulesUrl(perspective, namespace)}
-                  data-test={AlertRulesDetailsPageTestIDs.Header.AlertingRulesBreadcrumb}
+                  data-test={DataTestIDs.Breadcrumb}
                 >
                   {t('Alerting rules')}
                 </Link>
@@ -207,7 +207,7 @@ const AlertRulesDetailsPage_: React.FC = () => {
               <FlexItem
                 alignSelf={{ default: 'alignSelfCenter' }}
                 spacer={{ default: 'spacerNone' }}
-                data-test={AlertRulesDetailsPageTestIDs.Header.AlertResourceIcon}
+                data-test={DataTestIDs.AlertingRuleResourceIcon}
               >
                 <ResourceIcon kind={RuleResource.kind} />
               </FlexItem>
@@ -216,7 +216,7 @@ const AlertRulesDetailsPage_: React.FC = () => {
               </FlexItem>
               <FlexItem
                 alignSelf={{ default: 'alignSelfCenter' }}
-                data-test={AlertRulesDetailsPageTestIDs.Header.SeverityBadgeHeader}
+                data-test={DataTestIDs.SeverityBadgeHeader}
               >
                 <SeverityBadge severity={rule?.labels?.severity} />
               </FlexItem>
@@ -234,11 +234,7 @@ const AlertRulesDetailsPage_: React.FC = () => {
                 <DescriptionList>
                   <DescriptionListGroup>
                     <DescriptionListTerm>{t('Name')}</DescriptionListTerm>
-                    <DescriptionListDescription
-                      data-test={AlertRulesDetailsPageTestIDs.Details.Name}
-                    >
-                      {rule?.name}
-                    </DescriptionListDescription>
+                    <DescriptionListDescription>{rule?.name}</DescriptionListDescription>
                   </DescriptionListGroup>
                   <DescriptionListGroup>
                     <DescriptionListTermHelpText>
@@ -252,18 +248,14 @@ const AlertRulesDetailsPage_: React.FC = () => {
                         </DescriptionListTermHelpTextButton>
                       </Popover>
                     </DescriptionListTermHelpText>
-                    <DescriptionListDescription
-                      data-test={AlertRulesDetailsPageTestIDs.Details.Severity}
-                    >
+                    <DescriptionListDescription>
                       <SeverityBadge severity={rule?.labels?.severity} />
                     </DescriptionListDescription>
                   </DescriptionListGroup>
                   {rule?.annotations?.description && (
                     <DescriptionListGroup>
                       <DescriptionListTerm>{t('Description')}</DescriptionListTerm>
-                      <DescriptionListDescription
-                        data-test={AlertRulesDetailsPageTestIDs.Details.Description}
-                      >
+                      <DescriptionListDescription>
                         <PrometheusTemplate text={rule.annotations.description} />
                       </DescriptionListDescription>
                     </DescriptionListGroup>
@@ -271,9 +263,7 @@ const AlertRulesDetailsPage_: React.FC = () => {
                   {rule?.annotations?.summary && (
                     <DescriptionListGroup>
                       <DescriptionListTerm>{t('Summary')}</DescriptionListTerm>
-                      <DescriptionListDescription
-                        data-test={AlertRulesDetailsPageTestIDs.Details.Summary}
-                      >
+                      <DescriptionListDescription>
                         {rule.annotations.summary}
                       </DescriptionListDescription>
                     </DescriptionListGroup>
@@ -310,27 +300,21 @@ const AlertRulesDetailsPage_: React.FC = () => {
                         </DescriptionListTermHelpTextButton>
                       </Popover>
                     </DescriptionListTermHelpText>
-                    <DescriptionListDescription
-                      data-test={AlertRulesDetailsPageTestIDs.Details.Source}
-                    >
+                    <DescriptionListDescription>
                       {rule && getSourceKey(_.startCase(alertingRuleSource(rule)), t)}
                     </DescriptionListDescription>
                   </DescriptionListGroup>
                   {_.isInteger(rule?.duration) && (
                     <DescriptionListGroup>
                       <DescriptionListTerm>{t('For')}</DescriptionListTerm>
-                      <DescriptionListDescription
-                        data-test={AlertRulesDetailsPageTestIDs.Details.For}
-                      >
+                      <DescriptionListDescription>
                         {rule.duration === 0 ? '-' : formatPrometheusDuration(rule.duration * 1000)}
                       </DescriptionListDescription>
                     </DescriptionListGroup>
                   )}
                   <DescriptionListGroup>
                     <DescriptionListTerm>{t('Expression')}</DescriptionListTerm>
-                    <DescriptionListDescription
-                      data-test={AlertRulesDetailsPageTestIDs.Details.Expression}
-                    >
+                    <DescriptionListDescription data-test={DataTestIDs.Expression}>
                       {/* display a link only if its a metrics based alert */}
                       {(!sourceId || sourceId === 'prometheus') && perspective !== 'acm' ? (
                         <Link
@@ -357,9 +341,7 @@ const AlertRulesDetailsPage_: React.FC = () => {
                 <DescriptionList>
                   <DescriptionListGroup>
                     <DescriptionListTerm>{t('Labels')}</DescriptionListTerm>
-                    <DescriptionListDescription
-                      data-test={AlertRulesDetailsPageTestIDs.Details.Labels}
-                    >
+                    <DescriptionListDescription>
                       <Labels labels={rule?.labels} />
                     </DescriptionListDescription>
                   </DescriptionListGroup>

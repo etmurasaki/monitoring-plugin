@@ -29,7 +29,7 @@ import {
   usePerspective,
 } from '../../../components/hooks/usePerspective';
 import { Link } from 'react-router-dom-v5-compat';
-import { AlertsPageTestIDs } from '../../data-test';
+import { DataTestIDs } from '../../data-test';
 
 const AlertTableRow: React.FC<{ alert: Alert }> = ({ alert }) => {
   const { t } = useTranslation(process.env.I18N_NAMESPACE);
@@ -50,7 +50,7 @@ const AlertTableRow: React.FC<{ alert: Alert }> = ({ alert }) => {
       <DropdownItem
         key="silence-alert"
         onClick={() => navigate(getNewSilenceAlertUrl(perspective, alert, namespace))}
-        data-test={AlertsPageTestIDs.AlertRow.SilenceAlertDropdownItem}
+        data-test={DataTestIDs.SilenceAlertDropdownItem}
       >
         {t('Silence alert')}
       </DropdownItem>,
@@ -81,7 +81,7 @@ const AlertTableRow: React.FC<{ alert: Alert }> = ({ alert }) => {
     <Tr>
       <Td title={title}>
         <Flex spaceItems={{ default: 'spaceItemsNone' }} flexWrap={{ default: 'nowrap' }}>
-          <FlexItem data-test={AlertsPageTestIDs.AlertRow.AlertResourceIcon}>
+          <FlexItem data-test={DataTestIDs.AlertResourceIcon}>
             <ResourceIcon kind={AlertResource.kind} />
           </FlexItem>
           <FlexItem>
@@ -93,17 +93,17 @@ const AlertTableRow: React.FC<{ alert: Alert }> = ({ alert }) => {
                 alert?.labels?.namespace || namespace,
               )}
               data-test-id="alert-resource-link"
-              data-test={AlertsPageTestIDs.AlertRow.AlertResourceLink}
+              data-test={DataTestIDs.AlertResourceLink}
             >
               {alert?.labels?.alertname}
             </Link>
           </FlexItem>
         </Flex>
       </Td>
-      <Td title={title} data-test={AlertsPageTestIDs.AlertRow.AlertSeverityBadge}>
+      <Td title={title} data-test={DataTestIDs.SeverityBadge}>
         <SeverityBadge severity={alert.labels?.severity} />
       </Td>
-      <Td title={title} data-test={AlertsPageTestIDs.AlertRow.AlertNamespace}>
+      <Td title={title} data-test={DataTestIDs.AlertNamespace}>
         {alert.labels?.namespace ? (
           <ResourceLink
             groupVersionKind={NamespaceGroupVersionKind}
@@ -113,15 +113,15 @@ const AlertTableRow: React.FC<{ alert: Alert }> = ({ alert }) => {
           '-'
         )}
       </Td>
-      <Td title={title} data-test={AlertsPageTestIDs.AlertRow.AlertState}>
+      <Td title={title} data-test={DataTestIDs.AlertState}>
         <AlertState state={state} />
         <AlertStateDescription alert={alert} />
       </Td>
-      <Td title={title} data-test={AlertsPageTestIDs.AlertRow.AlertSource}>
+      <Td title={title} data-test={DataTestIDs.AlertSource}>
         {alertSource(alert) === AlertSource.User ? t('User') : t('Platform')}
       </Td>
       {perspective === 'acm' && (
-        <Td title={title} data-test={AlertsPageTestIDs.AlertRow.AlertCluster}>
+        <Td title={title} data-test={DataTestIDs.AlertCluster}>
           {alert.labels?.cluster}
         </Td>
       )}

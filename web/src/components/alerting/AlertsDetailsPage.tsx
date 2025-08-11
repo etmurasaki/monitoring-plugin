@@ -88,7 +88,7 @@ import {
   SourceHelp,
 } from './AlertUtils';
 
-import { AlertingDetailsPageTestIDs } from '../data-test';
+import { DataTestIDs } from '../data-test';
 
 const AlertsDetailsPage_: React.FC = () => {
   const { t } = useTranslation(process.env.I18N_NAMESPACE);
@@ -165,10 +165,7 @@ const AlertsDetailsPage_: React.FC = () => {
           <PageBreadcrumb hasBodyWrapper={false}>
             <Breadcrumb>
               <BreadcrumbItem>
-                <Link
-                  to={getAlertsUrl(perspective, namespace)}
-                  data-test={AlertingDetailsPageTestIDs.Header.AlertingBreadcrumb}
-                >
+                <Link to={getAlertsUrl(perspective, namespace)} data-test={DataTestIDs.Breadcrumb}>
                   {t('Alerts')}
                 </Link>
               </BreadcrumbItem>
@@ -182,7 +179,7 @@ const AlertsDetailsPage_: React.FC = () => {
                   <FlexItem
                     alignSelf={{ default: 'alignSelfCenter' }}
                     spacer={{ default: 'spacerNone' }}
-                    data-test={AlertingDetailsPageTestIDs.Header.AlertResourceIcon}
+                    data-test={DataTestIDs.AlertResourceIcon}
                   >
                     <ResourceIcon kind={AlertResource.kind} />
                   </FlexItem>
@@ -191,7 +188,7 @@ const AlertsDetailsPage_: React.FC = () => {
                   </FlexItem>
                   <FlexItem
                     alignSelf={{ default: 'alignSelfCenter' }}
-                    data-test={AlertingDetailsPageTestIDs.Header.SeverityBadgeHeader}
+                    data-test={DataTestIDs.SeverityBadgeHeader}
                   >
                     <SeverityBadge severity={rule?.labels?.severity} />
                   </FlexItem>
@@ -204,7 +201,7 @@ const AlertsDetailsPage_: React.FC = () => {
                   <Button
                     onClick={() => navigate(getNewSilenceAlertUrl(perspective, alert, namespace))}
                     variant="primary"
-                    data-test={AlertingDetailsPageTestIDs.Header.SilenceAlertButton}
+                    data-test={DataTestIDs.SilenceButton}
                   >
                     {t('Silence alert')}
                   </Button>
@@ -267,9 +264,7 @@ const AlertsDetailsPage_: React.FC = () => {
                 <DescriptionList>
                   <DescriptionListGroup>
                     <DescriptionListTerm>{t('Name')}</DescriptionListTerm>
-                    <DescriptionListDescription data-test={AlertingDetailsPageTestIDs.Details.Name}>
-                      {labels?.alertname}
-                    </DescriptionListDescription>
+                    <DescriptionListDescription> {labels?.alertname} </DescriptionListDescription>
                   </DescriptionListGroup>
                   <DescriptionListGroup>
                     <DescriptionListTermHelpText>
@@ -282,18 +277,14 @@ const AlertsDetailsPage_: React.FC = () => {
                         </DescriptionListTermHelpTextButton>
                       </Popover>
                     </DescriptionListTermHelpText>
-                    <DescriptionListDescription
-                      data-test={AlertingDetailsPageTestIDs.Details.Severity}
-                    >
+                    <DescriptionListDescription data-test={DataTestIDs.SeverityBadge}>
                       <SeverityBadge severity={labels?.severity} />
                     </DescriptionListDescription>
                   </DescriptionListGroup>
                   {alert?.annotations?.description && (
                     <DescriptionListGroup>
                       <DescriptionListTerm>{t('Description')}</DescriptionListTerm>
-                      <DescriptionListDescription
-                        data-test={AlertingDetailsPageTestIDs.Details.Description}
-                      >
+                      <DescriptionListDescription>
                         <AlertMessage
                           alertText={alert.annotations.description}
                           labels={labels}
@@ -305,9 +296,7 @@ const AlertsDetailsPage_: React.FC = () => {
                   {alert?.annotations?.summary && (
                     <DescriptionListGroup>
                       <DescriptionListTerm>{t('Summary')}</DescriptionListTerm>
-                      <DescriptionListDescription
-                        data-test={AlertingDetailsPageTestIDs.Details.Summary}
-                      >
+                      <DescriptionListDescription>
                         {alert.annotations.summary}
                       </DescriptionListDescription>
                     </DescriptionListGroup>
@@ -344,9 +333,7 @@ const AlertsDetailsPage_: React.FC = () => {
                         </DescriptionListTermHelpTextButton>
                       </Popover>
                     </DescriptionListTermHelpText>
-                    <DescriptionListDescription
-                      data-test={AlertingDetailsPageTestIDs.Details.Source}
-                    >
+                    <DescriptionListDescription>
                       {alert && getSourceKey(_.startCase(alertSource(alert)), t)}
                     </DescriptionListDescription>
                   </DescriptionListGroup>
@@ -358,9 +345,7 @@ const AlertsDetailsPage_: React.FC = () => {
                         </DescriptionListTermHelpTextButton>
                       </Popover>
                     </DescriptionListTermHelpText>
-                    <DescriptionListDescription
-                      data-test={AlertingDetailsPageTestIDs.Details.State}
-                    >
+                    <DescriptionListDescription>
                       <AlertState state={state} />
                       <AlertStateDescription alert={alert} />
                     </DescriptionListDescription>
@@ -371,9 +356,7 @@ const AlertsDetailsPage_: React.FC = () => {
                 <DescriptionList>
                   <DescriptionListGroup>
                     <DescriptionListTerm>{t('Labels')}</DescriptionListTerm>
-                    <DescriptionListDescription
-                      data-test={AlertingDetailsPageTestIDs.Details.Labels}
-                    >
+                    <DescriptionListDescription>
                       <Labels labels={labels} />
                     </DescriptionListDescription>
                   </DescriptionListGroup>
@@ -388,13 +371,13 @@ const AlertsDetailsPage_: React.FC = () => {
                         spaceItems={{ default: 'spaceItemsNone' }}
                         flexWrap={{ default: 'nowrap' }}
                       >
-                        <FlexItem data-test={AlertingDetailsPageTestIDs.Details.AlertingRuleIcon}>
+                        <FlexItem data-test={DataTestIDs.AlertingRuleResourceIcon}>
                           <ResourceIcon kind={RuleResource.kind} />
                         </FlexItem>
                         <FlexItem>
                           <Link
                             to={getRuleUrl(perspective, rule, namespace)}
-                            data-test={AlertingDetailsPageTestIDs.Details.AlertingRuleLink}
+                            data-test={DataTestIDs.AlertingRuleResourceLink}
                           >
                             {_.get(rule, 'name')}
                           </Link>

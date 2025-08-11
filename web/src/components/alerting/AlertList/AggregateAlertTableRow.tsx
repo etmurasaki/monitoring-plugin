@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom-v5-compat';
 import { SelectedFilters } from '../useSelectedFilters';
 import { filterAlerts } from './hooks/utils';
 import { Badge, Flex, FlexItem } from '@patternfly/react-core';
-import { AlertsPageTestIDs } from '../../data-test';
+import { DataTestIDs } from '../../data-test';
 
 type AggregateAlertTableRowProps = React.FC<{
   aggregatedAlert: AggregatedAlert;
@@ -89,11 +89,11 @@ const AggregateAlertTableRow: AggregateAlertTableRowProps = ({
             onToggle: (event, rowIndex, isOpen) => setIsExpanded(isOpen),
             expandId: 'expand-interfaces-list',
           }}
-          data-test={AlertsPageTestIDs.AlertingRuleRow.AlertingRuleArrow}
+          data-test={DataTestIDs.AlertingRuleArrow}
         />
         <Td title={title}>
           <Flex spaceItems={{ default: 'spaceItemsNone' }} flexWrap={{ default: 'nowrap' }}>
-            <FlexItem data-test={AlertsPageTestIDs.AlertingRuleRow.AlertingRuleResourceIcon}>
+            <FlexItem data-test={DataTestIDs.AlertingRuleResourceIcon}>
               <ResourceIcon kind={RuleResource.kind} />
             </FlexItem>
             <FlexItem>
@@ -104,29 +104,22 @@ const AggregateAlertTableRow: AggregateAlertTableRowProps = ({
                   firstAlert?.labels?.namespace || namespace,
                 )}
                 data-test-id="alert-resource-link"
-                data-test={AlertsPageTestIDs.AlertingRuleRow.AlertingRuleResourceLink}
+                data-test={DataTestIDs.AlertingRuleResourceLink}
               >
                 {aggregatedAlert.name}
               </Link>
             </FlexItem>
           </Flex>
         </Td>
-        <Td title={title} data-test={AlertsPageTestIDs.AlertingRuleRow.AlertingRuleSeverityBadge}>
+        <Td title={title} data-test={DataTestIDs.AlertingRuleSeverityBadge}>
           <SeverityBadge severity={aggregatedAlert.severity} />
         </Td>
-        <Td
-          title={title}
-          data-test={AlertsPageTestIDs.AlertingRuleRow.AlertingRuleTotalAlertsBadge}
-        >
+        <Td title={title} data-test={DataTestIDs.AlertingRuleTotalAlertsBadge}>
           <Badge key={1} isRead>
             {filteredAlerts.length}
           </Badge>
         </Td>
-        <Td
-          title={title}
-          data-test={AlertsPageTestIDs.AlertingRuleRow.AlertingRuleStateBadge}
-          data-test-id="alert-state-badge"
-        >
+        <Td title={title} data-test={DataTestIDs.AlertingRuleStateBadge}>
           {filteredStates.map((state) => (
             <AlertState state={state} key={state} />
           ))}

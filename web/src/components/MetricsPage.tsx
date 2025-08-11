@@ -116,7 +116,7 @@ import { ReactRouter5Adapter } from 'use-query-params/adapters/react-router-5';
 import { GraphUnits, isGraphUnit } from './metrics/units';
 import { SimpleSelect, SimpleSelectOption } from '@patternfly/react-templates';
 import { valueFormatter } from './console/console-shared/src/components/query-browser/QueryBrowserTooltip';
-import { ComponentsTestIDs } from './data-test';
+import { DataTestIDs } from './data-test';
 
 // Stores information about the currently focused query input
 let focusedQuery;
@@ -303,7 +303,7 @@ const MetricsActionsMenu: React.FC = () => {
           ref={toggleRef}
           onClick={setIsOpen}
           isExpanded={isOpen}
-          data-test={ComponentsTestIDs.MetricsPage.ActionsDropdownButton}
+          data-test={DataTestIDs.MetricsPageActionsDropdownButton}
         >
           Actions
         </MenuToggle>
@@ -316,7 +316,7 @@ const MetricsActionsMenu: React.FC = () => {
           value={0}
           key="add-query"
           onClick={addQuery}
-          data-test={ComponentsTestIDs.MetricsPage.AddQueryDropdownItem}
+          data-test={DataTestIDs.MetricsPageAddQueryDropdownItem}
         >
           {t('Add query')}
         </DropdownItem>
@@ -324,7 +324,7 @@ const MetricsActionsMenu: React.FC = () => {
           value={1}
           key="expand-collapse-all"
           onClick={() => dispatch(queryBrowserSetAllExpanded(!isAllExpanded))}
-          data-test={ComponentsTestIDs.MetricsPage.ExpandCollapseAllDropdownItem}
+          data-test={DataTestIDs.MetricsPageExpandCollapseAllDropdownItem}
         >
           {isAllExpanded ? t('Collapse all query tables') : t('Expand all query tables')}
         </DropdownItem>
@@ -332,7 +332,7 @@ const MetricsActionsMenu: React.FC = () => {
           value={2}
           key="delete-all-queries"
           onClick={doDelete}
-          data-test={ComponentsTestIDs.MetricsPage.DeleteAllQueriesDropdownItem}
+          data-test={DataTestIDs.MetricsPageDeleteAllQueriesDropdownItem}
         >
           {t('Delete all queries')}
         </DropdownItem>
@@ -369,7 +369,7 @@ export const ToggleGraph: React.FC = () => {
           type="button"
           onClick={toggle}
           variant="link"
-          data-test={ComponentsTestIDs.MetricsPage.HideShowGraphButton}
+          data-test={DataTestIDs.MetricHideShowGraphButton}
         >
           {icon} {hideGraphs ? t('Show graph') : t('Hide graph')}
         </Button>
@@ -425,7 +425,7 @@ const SeriesButton: React.FC<SeriesButtonProps> = ({ index, labels }) => {
       title={title}
       type="button"
       variant="control"
-      data-test={ComponentsTestIDs.MetricsPage.SeriesButton}
+      data-test={DataTestIDs.MetricsPageSeriesButton}
     />
   );
 };
@@ -555,7 +555,7 @@ const QueryKebab: React.FC<{ index: number }> = ({ index }) => {
       key="export"
       component="button"
       onClick={doExportCsv}
-      data-test={ComponentsTestIDs.MetricsPage.ExportCsvDropdownItem}
+      data-test={DataTestIDs.MetricsPageExportCsvDropdownItem}
     >
       {t('Export as CSV')}
     </DropdownItem>
@@ -566,7 +566,7 @@ const QueryKebab: React.FC<{ index: number }> = ({ index }) => {
       key="toggle-query"
       component="button"
       onClick={toggleIsEnabled}
-      data-test={ComponentsTestIDs.MetricsPage.DisableEnableQueryDropdownItem}
+      data-test={DataTestIDs.MetricsPageDisableEnableQueryDropdownItem}
     >
       {isEnabled ? t('Disable query') : t('Enable query')}
     </DropdownItem>,
@@ -575,7 +575,7 @@ const QueryKebab: React.FC<{ index: number }> = ({ index }) => {
         component="button"
         onClick={toggleAllSeries}
         key="toggle-all-series"
-        data-test={ComponentsTestIDs.MetricsPage.HideShowAllSeriesDropdownItem}
+        data-test={DataTestIDs.MetricsPageHideShowAllSeriesDropdownItem}
       >
         {isDisabledSeriesEmpty ? t('Hide all series') : t('Show all series')}
       </DropdownItem>
@@ -597,7 +597,7 @@ const QueryKebab: React.FC<{ index: number }> = ({ index }) => {
       key="delete"
       component="button"
       onClick={doDelete}
-      data-test={ComponentsTestIDs.MetricsPage.DeleteQueryDropdownItem}
+      data-test={DataTestIDs.MetricsPageDeleteQueryDropdownItem}
     >
       {t('Delete query')}
     </DropdownItem>,
@@ -605,7 +605,7 @@ const QueryKebab: React.FC<{ index: number }> = ({ index }) => {
       key="duplicate"
       component="button"
       onClick={doClone}
-      data-test={ComponentsTestIDs.MetricsPage.DuplicateQueryDropdownItem}
+      data-test={DataTestIDs.MetricsPageDuplicateQueryDropdownItem}
     >
       {t('Duplicate query')}
     </DropdownItem>,
@@ -754,7 +754,7 @@ export const QueryTable: React.FC<QueryTableProps> = ({
 
   if (!result || result.length === 0) {
     return (
-      <div data-test={ComponentsTestIDs.MetricsPage.YellowNoDatapointsFound}>
+      <div data-test={DataTestIDs.MetricsPageYellowNoDatapointsFound}>
         <YellowExclamationTriangleIcon /> {t('No datapoints found.')}
       </div>
     );
@@ -868,7 +868,7 @@ export const QueryTable: React.FC<QueryTableProps> = ({
         variant="link"
         isInline
         onClick={toggleAllSeries}
-        data-test={ComponentsTestIDs.MetricsPage.SelectAllUnselectAllDropdownItem}
+        data-test={DataTestIDs.MetricsPageSelectAllUnselectAllDropdownItem}
       >
         {isDisabledSeriesEmpty ? t('Unselect all') : t('Select all')}
       </Button>
@@ -878,7 +878,7 @@ export const QueryTable: React.FC<QueryTableProps> = ({
           gridBreakPoint={TableGridBreakpoint.none}
           rows={tableRows.length}
           variant={TableVariant.compact}
-          data-test={ComponentsTestIDs.MetricsPage.QueryTable}
+          data-test={DataTestIDs.MetricsPageQueryTable}
         >
           <Thead>
             <Tr>
@@ -1015,7 +1015,7 @@ const Query: React.FC<{
         isChecked={isEnabled}
         key={switchKey}
         onChange={toggleIsEnabled}
-        data-test={ComponentsTestIDs.MetricsPage.DisableEnableQuerySwitch}
+        data-test={DataTestIDs.MetricsPageDisableEnableQuerySwitch}
       />
     </div>
   );
@@ -1041,7 +1041,7 @@ const Query: React.FC<{
           buttonProps={{ isInline: true }}
           id={`toggle-${queryId}`}
           aria-controls={`query-expand-${queryId}`}
-          data-test={ComponentsTestIDs.MetricsPage.ExpandCollapseAllButton}
+          data-test={DataTestIDs.MetricsPageExpandCollapseAllButton}
         />
         <DataListItemCells
           dataListCells={[
@@ -1174,24 +1174,20 @@ const QueryBrowserWrapper: React.FC<{
     return (
       <EmptyState
         titleText={
-          <Title
-            headingLevel="h2"
-            size="md"
-            data-test={ComponentsTestIDs.MetricsPage.NoQueryEnteredTitle}
-          >
+          <Title headingLevel="h2" size="md" data-test={DataTestIDs.MetricsPageNoQueryEnteredTitle}>
             {t('No query entered')}
           </Title>
         }
         icon={ChartLineIcon}
         variant={EmptyStateVariant.full}
       >
-        <EmptyStateBody data-test={ComponentsTestIDs.MetricsPage.NoQueryEntered}>
+        <EmptyStateBody data-test={DataTestIDs.MetricsPageNoQueryEntered}>
           {t('Enter a query in the box below to explore metrics for this cluster.')}
         </EmptyStateBody>
         <Button
           onClick={insertExampleQuery}
           variant="primary"
-          data-test={ComponentsTestIDs.MetricsPage.InsertExampleQueryButton}
+          data-test={DataTestIDs.MetricsPageInsertExampleQueryButton}
         >
           {t('Insert example query')}
         </Button>
@@ -1223,7 +1219,7 @@ const AddQueryButton: React.FC = () => {
       onClick={addQuery}
       type="button"
       variant="secondary"
-      data-test={ComponentsTestIDs.MetricsPage.AddQueryButton}
+      data-test={DataTestIDs.MetricsPageAddQueryButton}
     >
       {t('Add query')}
     </Button>
@@ -1241,7 +1237,7 @@ const RunQueriesButton: React.FC = () => {
       onClick={runQueries}
       type="submit"
       variant="primary"
-      data-test={ComponentsTestIDs.MetricsPage.RunQueriesButton}
+      data-test={DataTestIDs.MetricsPageRunQueriesButton}
     >
       {t('Run queries')}
     </Button>
@@ -1414,12 +1410,12 @@ const MetricsPage_: React.FC = () => {
             </SplitItem>
           )}
           <SplitItem isFilled />
-          <SplitItem data-test={ComponentsTestIDs.GraphUnitsDropDown}>
+          <SplitItem data-test={DataTestIDs.MetricGraphUnitsDropDown}>
             <Tooltip content={<>{t('This dropdown only formats results.')}</>}>
               <GraphUnitsDropDown />
             </Tooltip>
           </SplitItem>
-          <SplitItem data-test={ComponentsTestIDs.DropdownPollInterval}>
+          <SplitItem data-test={DataTestIDs.MetricDropdownPollInterval}>
             <IntervalDropdown />
           </SplitItem>
           <SplitItem>

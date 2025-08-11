@@ -40,7 +40,7 @@ import {
 import { Silences } from '../types';
 import { fuzzyCaseInsensitive, refreshSilences, silenceCluster, silenceState } from '../utils';
 import { SelectedSilencesContext, SilenceTableRow } from './SilencesUtils';
-import { SilencesPageTestIDs } from '../data-test';
+import { DataTestIDs } from '../data-test';
 
 const SilencesPage_: React.FC = () => {
   const { t } = useTranslation(process.env.I18N_NAMESPACE);
@@ -234,7 +234,6 @@ const SilencesPage_: React.FC = () => {
                 return <EmptyBox label={t('Silences')} />;
               }}
               scrollNode={() => document.getElementById('silences-table-scroll')}
-              data-test={SilencesPageTestIDs.SilencesTable.SilencesTable}
             />
           </div>
         </SelectedSilencesContext.Provider>
@@ -265,7 +264,6 @@ const SelectAllCheckbox: React.FC<{ silences: Silence[] }> = ({ silences }) => {
       isChecked={isAllSelected}
       isDisabled={activeSilences.length === 0}
       onChange={(_e, checked) => (typeof _e === 'boolean' ? onChange(_e) : onChange(checked))}
-      data-test={SilencesPageTestIDs.SilencesTable.SelectAllCheckbox}
     />
   );
 };
@@ -334,7 +332,7 @@ const ExpireAllSilencesButton: React.FC<ExpireAllSilencesButtonProps> = ({ setEr
       isLoading={isInProgress}
       onClick={onClick}
       variant="secondary"
-      data-test={SilencesPageTestIDs.ExpireXSilencesButton}
+      data-test={DataTestIDs.ExpireXSilencesButton}
     >
       {t('Expire {{count}} silence', { count: selectedSilences.size })}
     </Button>
@@ -352,7 +350,7 @@ const CreateSilenceButton: React.FC = React.memo(() => {
 
   return (
     <Link to={getNewSilenceUrl(perspective, namespace)}>
-      <Button data-test={SilencesPageTestIDs.CreateSilenceButton} variant="primary">
+      <Button data-test={DataTestIDs.SilenceButton} variant="primary">
         {t('Create silence')}
       </Button>
     </Link>

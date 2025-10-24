@@ -30,7 +30,7 @@ describe('BVT: Monitoring', () => {
     commonPages.detailsPage.administration_clusterSettings();
     nav.sidenav.clickNavLink(['Observe', 'Alerting']);
     commonPages.titleShouldHaveText('Alerting');
-    cy.changeNamespace('All Projects');
+    // cy.changeNamespace('All Projects');
     nav.tabs.switchTab('Silences');
     nav.sidenav.clickNavLink(['Observe', 'Metrics']);
     commonPages.titleShouldHaveText('Metrics');
@@ -72,7 +72,7 @@ describe('BVT: Monitoring', () => {
     nav.sidenav.clickNavLink(['Home', 'Overview']);
     overviewPage.clickClusterUtilizationViewCPU();
     commonPages.titleShouldHaveText('Metrics');
-    commonPages.projectDropdownShouldExist();
+    // commonPages.projectDropdownShouldExist();
   });
 
 

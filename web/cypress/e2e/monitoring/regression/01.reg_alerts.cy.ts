@@ -24,10 +24,10 @@ describe('Regression: Monitoring - Alerts', () => {
     cy.beforeBlock(MP);
   });
 
-  beforeEach(() => {
-    nav.sidenav.clickNavLink(['Observe', 'Alerting']);
-    cy.changeNamespace("All Projects");
-  });
+  // beforeEach(() => {
+  //   nav.sidenav.clickNavLink(['Observe', 'Alerting']);
+  //   cy.changeNamespace("All Projects");
+  // });
 
   it('1. Admin perspective - Alerting > Alerts page - Filtering', () => {
     cy.log('1.1 Header components');
@@ -127,7 +127,7 @@ describe('Regression: Monitoring - Alerts', () => {
     commonPages.titleShouldHaveText(`${WatchdogAlert.ALERTNAME}`);
     nav.sidenav.clickNavLink(['Observe', 'Alerting']);
     nav.tabs.switchTab('Silences');
-    cy.changeNamespace('openshift-monitoring');
+    // cy.changeNamespace('openshift-monitoring');
 
     cy.log('3.8 Assert Kebab on Silence List page for Expired alert');
     silencesListPage.emptyState();

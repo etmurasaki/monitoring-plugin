@@ -64,7 +64,7 @@ export const DataTestIDs = {
   SilencesPageFormTestIDs: {
     AddLabel: 'add-label',
     AlertLabelsDescription: 'alert-labels-description',
-    Comment: 'comment',
+    Comment: 'silence-comment',
     Creator: 'creator',
     Description: 'description-header',
     LabelName: 'label-name',
@@ -187,7 +187,7 @@ export const Classes = {
   MetricsPageRows: '.pf-v6-c-data-list.pf-m-grid-md',
   MetricsPageExpandedRowIcon: '.pf-v6-c-data-list__item.pf-m-expanded', //li
   MetricsPageCollapsedRowIcon: '.pf-v6-c-data-list__item', //li
-  MetricsPageQueryInput: '.cm-content.cm-lineWrapping',
+  MetricsPageQueryInput: '.cm-line',
   MetricsPageUngraphableResults: '.pf-v6-c-title.pf-m-md',
   MetricsPageUngraphableResultsDescription: '.pf-v6-c-empty-state__body',
   MetricsPageQueryAutocomplete: '.cm-tooltip-autocomplete.cm-tooltip.cm-tooltip-below',

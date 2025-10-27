@@ -6,21 +6,18 @@ export const alertingRuleDetailsPage = {
   assertAlertingRuleDetailsPage: (title: string) => {
       cy.log('alertingRuleDetailsPage.assertAlertingRuleDetailsPage');
       commonPages.titleShouldHaveText(title);
-      cy.byTestID(DataTestIDs.AlertingRuleResourceIcon).contains('AR').should('be.visible');
+      cy.byClass('co-m-resource-icon co-m-resource-alertrule').contains('AR').should('be.visible');
       detailsPage.sectionHeaderShouldExist('Alerting rule details');
       detailsPage.sectionHeaderShouldExist('Active alerts');
-      cy.byTestID(DataTestIDs.Expression).should('be.visible');
-      cy.byTestID(DataTestIDs.MetricHideShowGraphButton).contains('Hide graph').should('be.visible');
-      // cy.byTestID(DataTestIDs.MetricGraph).scrollIntoView().should('be.visible'); 
-      cy.byTestID(DataTestIDs.MetricDisconnectedCheckbox).should('be.visible');
-      cy.byTestID(DataTestIDs.MetricGraphTimespanDropdown).should('be.visible');
-      cy.byTestID(DataTestIDs.MetricGraphTimespanInput).should('be.visible');
-      cy.byTestID(DataTestIDs.MetricResetZoomButton).should('be.visible');
+      cy.byClass('pf-v6-c-code-block__content').should('be.visible');
+      cy.bySemanticElement('button', 'Hide graph').should('be.visible');
+      cy.get('[id="disconnected"]').should('be.visible');
+      cy.bySemanticElement('button', 'Reset zoom').should('be.visible');
     },
   
     clickOnActiveAlerts: (desc: string) => {
       cy.log('alertingRuleDetailsPage.clickOnActiveAlerts');
-      cy.byTestID(DataTestIDs.AlertResourceLink)
+      cy.byTestID('active-alerts')
         .first()
         .should('have.text', desc)
         .click();
@@ -29,7 +26,7 @@ export const alertingRuleDetailsPage = {
     clickAlertingRulesBreadcrumb:() => {
       cy.log('alertingRuleDetailsPage.clickAlertingRulesBreadcrumb');
        try {
-        cy.byTestID(DataTestIDs.Breadcrumb).contains('Alerting rules').click();
+        cy.byAriaLabel('Breadcrumb').contains('Alerting rules').click();
         } catch (error) {
           cy.log(`${error.message}`);
           throw error; 
@@ -39,7 +36,7 @@ export const alertingRuleDetailsPage = {
     assertNoKebab: () => {
       cy.log('alertingRuleDetailsPage.assertNoKebab');
       try {
-        cy.byTestID(DataTestIDs.AlertResourceLink).scrollIntoView();
+        cy.byTestID('active-alerts').scrollIntoView();
         cy.byTestID(DataTestIDs.KebabDropdownButton).should('not.exist');
       }catch (error) {
         cy.log(`${error.message}`);
@@ -49,19 +46,17 @@ export const alertingRuleDetailsPage = {
 
     clickOnKebabSilenceAlert:()=>{
       cy.log('alertingRuleDetailsPage.clickOnKebabSilenceAlert');
-      cy.byTestID(DataTestIDs.KebabDropdownButton).scrollIntoView().should('be.visible').click();
-      cy.byPFRole('menuitem').contains('Silence alert').should('be.visible').click();
+      cy.byLegacyTestID('kebab-button').scrollIntoView().should('be.visible').click();
+      cy.bySemanticElement('button', 'Silence alert').should('be.visible').click();
     },
 
     clickHideGraphButton:()=>{
       cy.log('alertingRuleDetailsPage.clickHideGraphButton');
-      cy.byTestID(DataTestIDs.MetricHideShowGraphButton).scrollIntoView().contains('Hide graph').should('be.visible').click();
-      // cy.byTestID(DataTestIDs.MetricGraph).should('not.exist');
+      cy.bySemanticElement('button', 'Hide graph').scrollIntoView().should('be.visible').click();
     },
 
     clickShowGraphButton:()=>{
       cy.log('alertingRuleDetailsPage.clickShowGraphButton');
-      cy.byTestID(DataTestIDs.MetricHideShowGraphButton).scrollIntoView().contains('Show graph').should('be.visible').click();
-      // cy.byTestID(DataTestIDs.MetricGraph).should('be.visible');
+      cy.bySemanticElement('button', 'Show graph').scrollIntoView().should('be.visible').click();
     },
 };

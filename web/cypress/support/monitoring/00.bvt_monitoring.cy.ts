@@ -6,78 +6,23 @@ import { nav } from '../../views/nav';
 import { silenceDetailsPage } from '../../views/silence-details-page';
 import { silencesListPage } from '../../views/silences-list-page';
 import { getValFromElement } from '../../views/utils';
-import { overviewPage } from '../../views/overview-page';
-import common = require('mocha/lib/interfaces/common');
 import { AlertsAlertState, SilenceComment, SilenceState, WatchdogAlert } from '../../fixtures/monitoring/constants';
 import { alerts } from '../../fixtures/monitoring/alert';
 import { alertingRuleListPage } from '../../views/alerting-rule-list-page';
 // Set constants for the operators that need to be installed for tests.
-const MP = {
-  namespace: 'openshift-monitoring',
-  operatorName: 'Cluster Monitoring Operator',
-};
+export interface PerspectiveConfig {
+  name: string;
+  beforeEach?: () => void;
+}
 
-describe('BVT: Monitoring', () => {
+export function runBVTMonitoringTests(perspective: PerspectiveConfig) {
+  testBVTMonitoring(perspective);
+}
 
-  before(() => {
-    cy.beforeBlock(MP);
-  });
-
-  it('1. Admin perspective - Observe Menu', () => {
-    cy.visit('/');
-    cy.log('Admin perspective - Observe Menu and verify all submenus');
-    nav.sidenav.clickNavLink(['Administration', 'Cluster Settings']);
-    commonPages.detailsPage.administration_clusterSettings();
-    nav.sidenav.clickNavLink(['Observe', 'Alerting']);
-    commonPages.titleShouldHaveText('Alerting');
-    // cy.changeNamespace('All Projects');
-    nav.tabs.switchTab('Silences');
-    nav.sidenav.clickNavLink(['Observe', 'Metrics']);
-    commonPages.titleShouldHaveText('Metrics');
-    nav.sidenav.clickNavLink(['Observe', 'Dashboards']);
-    commonPages.titleShouldHaveText('Dashboards');
-    nav.sidenav.clickNavLink(['Observe', 'Targets']);
-    commonPages.titleShouldHaveText('Metrics targets');
+export function testBVTMonitoring(perspective: PerspectiveConfig) {
 
 
-  });
-  // TODO: Intercept Bell GET request to inject an alert (Watchdog to have it opened in Alert Details page?)
-  // it('Admin perspective - Bell > Alert details > Alerting rule details > Metrics flow', () => {
-  //   cy.visit('/');
-  //   commonPages.clickBellIcon();
-  //   commonPages.bellIconClickAlert('TargetDown');
-  //   commonPages.titleShouldHaveText('TargetDown')
-
-  // });
-
-
-  it('2. Admin perspective - Overview Page > Status - View alerts', () => {
-    cy.visit('/');
-    nav.sidenav.clickNavLink(['Home', 'Overview']);
-    overviewPage.clickStatusViewAlerts();
-    commonPages.titleShouldHaveText('Alerting');
-  });
-
-  //TODO: Intercept and inject a valid alert into status-card to be opened correctly to Alerting / Alerts page
-  // I couldn't make Watchdog working on status-card
-  // it('3. Admin perspective - Overview Page > Status - View details', () => {
-  //   cy.visit('/');
-  //   nav.sidenav.clickNavLink(['Home', 'Overview']);
-  //   overviewPage.clickStatusViewDetails(0);
-  //   detailsPage.sectionHeaderShouldExist('Alert details');
-  // });
-
-  it('4. Admin perspective - Cluster Utilization - Metrics', () => {
-    cy.visit('/');
-    nav.sidenav.clickNavLink(['Home', 'Overview']);
-    overviewPage.clickClusterUtilizationViewCPU();
-    commonPages.titleShouldHaveText('Metrics');
-    // commonPages.projectDropdownShouldExist();
-  });
-
-
-  it('5. Admin perspective - Alerting > Alerting Details page > Alerting Rule > Metrics', () => {
-    cy.visit('/');
+  it(`5. ${perspective.name} perspective - Alerting > Alerting Details page > Alerting Rule > Metrics`, () => {
     cy.log('5.1. use sidebar nav to go to Observe > Alerting');
     nav.sidenav.clickNavLink(['Observe', 'Alerting']);
     commonPages.titleShouldHaveText('Alerting');
@@ -107,7 +52,7 @@ describe('BVT: Monitoring', () => {
     });
 
     cy.log('5.4. click on Alert Rule link');
-    detailsPage.clickAlertRule(`${WatchdogAlert.ALERTNAME}`);
+    cy.byTestID('alert-rules-detail-resource-link').contains(`${WatchdogAlert.ALERTNAME}`).should('be.visible').click();
     commonPages.titleShouldHaveText(`${WatchdogAlert.ALERTNAME}`);
     commonPages.detailsPage.alertRule;
     commonPages.detailsPage.common(`${WatchdogAlert.ALERTNAME}`, `${WatchdogAlert.SEVERITY}`);
@@ -137,8 +82,7 @@ describe('BVT: Monitoring', () => {
     });
   });
 
-  it('6. Admin perspective - Creates and expires a Silence', () => {
-    cy.visit('/');
+  it(`6. ${perspective.name} perspective - Creates and expires a Silence`, () => {
     cy.log('6.1 use sidebar nav to go to Observe > Alerting');
     nav.sidenav.clickNavLink(['Observe', 'Alerting']);
     alerts.getWatchdogAlert();
@@ -161,7 +105,6 @@ describe('BVT: Monitoring', () => {
     silenceAlertPage.durationSectionDefault();
     silenceAlertPage.alertLabelsSectionDefault();
     silenceAlertPage.assertLabelNameLabelValueRegExNegMatcher('alertname', `${WatchdogAlert.ALERTNAME}`, false, false);
-    // silenceAlertPage.assertLabelNameLabelValueRegExNegMatcher('severity', `${SEVERITY}`, false, false);
     silenceAlertPage.assertLabelNameLabelValueRegExNegMatcher('namespace', `${WatchdogAlert.NAMESPACE}`, false, false);
     silenceAlertPage.assertLabelNameLabelValueRegExNegMatcher('prometheus', 'openshift-monitoring/k8s', false, false);
 
@@ -234,4 +177,4 @@ describe('BVT: Monitoring', () => {
     listPage.ARRows.ARShouldBe(`${WatchdogAlert.ALERTNAME}`, `${WatchdogAlert.SEVERITY}`, 1, AlertsAlertState.FIRING);
 
   });
-});
+}

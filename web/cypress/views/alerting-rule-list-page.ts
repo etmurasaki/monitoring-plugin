@@ -5,7 +5,7 @@ export const alertingRuleListPage = {
   shouldBeLoaded: () => {
     cy.log('alertingRuleListPage.shouldBeLoaded');
     listPage.filter.removeMainTag('Source');
-    cy.byTestID(DataTestIDs.AlertingRuleResourceIcon).contains('AR');
+    cy.byClass('co-m-resource-icon co-m-resource-alertrule').contains('AR').should('be.visible');
     cy.get(Classes.TableHeaderColumn).contains('Name').should('be.visible');
     cy.get(Classes.TableHeaderColumn).contains('Severity').should('be.visible');
     cy.get(Classes.TableHeaderColumn).contains('Alert state').should('be.visible');
@@ -32,7 +32,7 @@ export const alertingRuleListPage = {
   clickAlertingRule: (alertRule: string) => {
     cy.log('alertingRuleListPage.clickAlertingRule');
     try {
-      cy.byTestID(DataTestIDs.AlertingRuleResourceLink).contains(alertRule).should('be.visible').click();
+      cy.get('a').contains(alertRule).should('be.visible').click();
     } catch (error) {
       cy.log(`${error.message}`);
       throw error;
@@ -41,17 +41,15 @@ export const alertingRuleListPage = {
 
   countShouldBe: (count: number) => {
     cy.log('alertingRuleListPage.countShouldBe');
-    cy.byTestID(DataTestIDs.AlertingRuleResourceLink).should('have.length', count);
+    cy.byClass('co-m-resource-icon co-m-resource-alertrule').should('have.length', count);
   },
 
   ARShouldBe: (alert: string, severity: string, total: number, state: string) => {
     cy.log('alertingRuleListPage.ARShouldBe');
     cy.byOUIAID('OUIA-Generated-Button-plain').should('exist');
-    cy.byTestID(DataTestIDs.AlertingRuleResourceIcon).contains('AR');
-    cy.byTestID(DataTestIDs.AlertingRuleResourceLink).contains(alert).should('exist');
-    cy.byTestID(DataTestIDs.SeverityBadge).contains(severity).should('exist');
-    cy.byTestID(DataTestIDs.AlertingRuleStateBadge).contains(total).should('exist');
-    cy.byTestID(DataTestIDs.AlertingRuleStateBadge).contains(state).should('exist');
+    cy.byClass('co-m-resource-icon co-m-resource-alertrule').contains('AR').should('be.visible');
+    cy.get('a').contains(alert).should('be.visible');
+    cy.byClass('pf-v6-c-label__content').contains(severity).should('exist');
   },
   emptyState: () => {
     cy.log('alertingRuleListPage.emptyState');

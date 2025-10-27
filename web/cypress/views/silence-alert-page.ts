@@ -20,7 +20,7 @@ export const silenceAlertPage = {
 
   durationSectionDefault: () => {
     cy.log('silenceAlertPage.durationSectionDefault');
-    cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.StartImmediately).should('be.checked');
+    cy.get('[id="start-immediately"]').should('be.checked');
     cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.SilenceFrom).should('have.value', 'Now');
     cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.SilenceForToggle).should('contain', '2h');
     cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.SilenceUntil).should('have.value', '2h from now');
@@ -28,7 +28,7 @@ export const silenceAlertPage = {
 
   editDurationSectionDefault: () => {
     cy.log('silenceAlertPage.durationSectionDefault');
-    cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.StartImmediately).should('be.checked'); //pf-5 cy.byTestID('[id="silence-start-immediately"]').should('be.checked'); 
+    cy.get('[id="start-immediately"]').should('be.checked');
     cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.SilenceFrom).should('have.value', 'Now');
     cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.SilenceForToggle).should('contain', '-');
     cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.SilenceUntil).should('not.have.value', '2h from now');
@@ -42,21 +42,21 @@ export const silenceAlertPage = {
   assertLabelNameLabelValueRegExNegMatcher: (labelName: string, labelValue: string, regEx: boolean, negMatcher: boolean) => {
     cy.log('silenceAlertPage.assertLabelNameLabelValueRegExNegMatcher');
     cy.byClass('pf-v6-l-grid pf-m-all-12-col-on-sm pf-m-all-4-col-on-md pf-m-gutter').each(($row, rowIndex) => { //pf-5 cy.get('.row').each(($row, rowIndex) => {
-      cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelName+'"]').invoke('val').then((cellText) => {
+      cy.wrap($row).find('[aria-label="Label name"]').invoke('val').then((cellText) => {
         if (cellText === labelName){
-          cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelName+'"]').invoke('val').should('equal', labelName);
-          cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelValue+'"]').invoke('val').should('equal', labelValue);
+          cy.wrap($row).find('[aria-label="Label name"]').invoke('val').should('equal', labelName);
+          cy.wrap($row).find('[aria-label="Label value"]').invoke('val').should('equal', labelValue);
           if (regEx){
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.Regex+'"]').should('be.checked'); 
+            cy.wrap($row).find(`#regex-${rowIndex}`).should('be.checked'); 
           } else{
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.Regex+'"]').should('not.be.checked');
+            cy.wrap($row).find(`#regex-${rowIndex}`).should('not.be.checked');
           }
           if (negMatcher){
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.NegativeMatcherCheckbox+'"]').should('be.checked');
+            cy.wrap($row).find(`#negative-matcher-${rowIndex}`).should('be.checked');
           } else{
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.NegativeMatcherCheckbox+'"]').should('not.be.checked');
+            cy.wrap($row).find(`#negative-matcher-${rowIndex}`).should('not.be.checked');
           }
-          cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.RemoveLabel+'"]').should('be.visible');
+          cy.wrap($row).find(`[aria-label="Remove"]`).should('be.visible');
         } else {
           return;
         }
@@ -67,22 +67,22 @@ export const silenceAlertPage = {
   assertNamespaceLabelNamespaceValueDisabled: (labelName: string, labelValue: string, disabled: boolean) => {
     cy.log('silenceAlertPage.assertNamespaceLabelNamespaceValueDisabled');
     cy.byClass('pf-v6-l-grid pf-m-all-12-col-on-sm pf-m-all-4-col-on-md pf-m-gutter').each(($row, rowIndex) => { //pf-5 cy.get('.row').each(($row, rowIndex) => {
-      cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelName+'"]').invoke('val').then((cellText) => {
+      cy.wrap($row).find('[aria-label="Label name"]').invoke('val').then((cellText) => {
         if (cellText === labelName){
-          cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelName+'"]').invoke('val').should('equal', labelName);
-          cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelValue+'"]').invoke('val').should('equal', labelValue);
+          cy.wrap($row).find('[aria-label="Label name"]').invoke('val').should('equal', labelName);
+          cy.wrap($row).find('[aria-label="Label value"]').invoke('val').should('equal', labelValue);
           if (disabled){
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelName+'"]').should('have.attr', 'disabled');
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelValue+'"]').should('have.attr', 'disabled');
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.Regex+'"]').should('have.attr', 'disabled'); 
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.NegativeMatcherCheckbox+'"]').should('have.attr', 'disabled');
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.RemoveLabel+'"]').should('have.attr', 'disabled');
+            cy.wrap($row).find('[aria-label="Label name"]').should('have.attr', 'disabled');
+            cy.wrap($row).find('[aria-label="Label value"]').should('have.attr', 'disabled');
+            cy.wrap($row).find(`#regex-${rowIndex}`).should('have.attr', 'disabled'); 
+            cy.wrap($row).find(`#negative-matcher-${rowIndex}`).should('have.attr', 'disabled');
+            cy.wrap($row).find(`[aria-label="Remove"]`).should('have.attr', 'disabled');
           } else{
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelName+'"]').should('not.have.attr', 'disabled');
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelValue+'"]').should('not.have.attr', 'disabled');
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.Regex+'"]').should('not.have.attr', 'disabled');
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.NegativeMatcherCheckbox+'"]').should('not.have.attr', 'disabled');
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.RemoveLabel+'"]').should('not.have.attr', 'disabled');
+            cy.wrap($row).find('[aria-label="Label name"]').should('not.have.attr', 'disabled');
+            cy.wrap($row).find('[aria-label="Label value"]').should('not.have.attr', 'disabled');
+            cy.wrap($row).find(`#regex-${rowIndex}`).should('not.have.attr', 'disabled');
+            cy.wrap($row).find(`#negative-matcher-${rowIndex}`).should('not.have.attr', 'disabled');
+            cy.wrap($row).find(`[aria-label="Remove"]`).should('not.have.attr', 'disabled');
           }
         } else {
           return;
@@ -93,23 +93,23 @@ export const silenceAlertPage = {
 
   infoSectionDefault: () => {
     cy.log('silenceAlertPage.infoSectionDefault');
-    cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.Creator).invoke('val')
+    cy.get('[aria-label="Creator"]').invoke('val')
       .should('not.be.empty')
       .should('have.attr', 'required');
-    cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.Comment).invoke('text')
+    cy.get('[aria-label="Comment"]').invoke('text')
       .should('be.empty')
       .should('have.attr', 'required');
   },
 
   buttonDefault: () => {
     cy.log('silenceAlertPage.buttonDefault');
-    cy.byTestID(DataTestIDs.SilenceButton).should('be.visible');
-    cy.byTestID(DataTestIDs.CancelButton).should('be.visible');
+    cy.bySemanticElement('button', 'Silence').should('be.visible');
+    cy.bySemanticElement('button', 'Cancel').should('be.visible');
   },
   
   clickCancelButton: () => {
     cy.log('silenceAlertPage.clickCancelButton');
-    cy.byTestID(DataTestIDs.CancelButton).scrollIntoView().should('be.visible').click();
+    cy.bySemanticElement('button', 'Cancel').scrollIntoView().should('be.visible').click();
   },
   /**
    * changeDuration only changing For (time dropdown) and Start immediately checkbox
@@ -122,17 +122,17 @@ export const silenceAlertPage = {
     cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.SilenceFor).should('contain', time);  
     cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.SilenceFor).contains(time).click();  
 
-    cy.get('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.StartImmediately+'"]').then((checkbox) => { //pf-5 cy.byTestID('[id="silence-start-immediately"]')
+    cy.get('[id="start-immediately"]').then((checkbox) => { //pf-5 cy.byTestID('[id="silence-start-immediately"]')
       if (startImmediately){
         if (!checkbox.prop('checked') ){
-          cy.get('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.StartImmediately+'"]').click(); //pf-5 cy.byTestID('[id="silence-start-immediately"]').click(); 
+          cy.get('[id="start-immediately"]').click(); //pf-5 cy.byTestID('[id="silence-start-immediately"]').click(); 
         }
         cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.SilenceFrom).should('have.value', 'Now');
         cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.SilenceUntil).should('have.value', time +' from now');
 
       } else {
         if (checkbox.prop('checked')){
-          cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.StartImmediately).click(); //pf-5 cy.byTestID('[id="silence-start-immediately"]').click(); 
+          cy.get('[id="start-immediately"]').click(); //pf-5 cy.byTestID('[id="silence-start-immediately"]').click(); 
         }
         cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.SilenceFrom).should('have.not.value', 'Now');
         cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.SilenceFrom).then(($fromElement) => {
@@ -184,9 +184,9 @@ export const silenceAlertPage = {
   addCreator: (creator: string) => {
     cy.log('silenceAlertPage.addCreator');
     if (!creator){
-      cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.Creator).clear();
+      cy.byAriaLabel('Creator').clear();
     } else{
-      cy.byTestID(DataTestIDs.SilencesPageFormTestIDs.Creator).clear().type(creator);
+      cy.byAriaLabel('Creator').clear().type(creator);
     }
     
   },
@@ -198,7 +198,7 @@ export const silenceAlertPage = {
   },
   clickSubmit: () =>{
     cy.log('silenceAlertPage.clickSubmit');
-    cy.byTestID(DataTestIDs.SilenceButton).scrollIntoView().should('be.visible').click();
+    cy.bySemanticElement('button', 'Silence').scrollIntoView().should('be.visible').click();
   },
   /**
    * pf-6 only
@@ -228,31 +228,31 @@ export const silenceAlertPage = {
   fillLabeNameLabelValue: (labelName: string, labelValue: string, index?: number) => {
     cy.log('silenceAlertPage.fillLabeNameLabelValue');
     cy.get(Classes.SilenceLabelRow).each(($row, rowIndex) => {
-      cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelName+'"]').invoke('val').then((cellText) => {
+      cy.wrap($row).find('[aria-label="Label name"]').invoke('val').then((cellText) => {
         if (index){
           if (rowIndex === index){
             if (!labelName){
-              cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelName+'"]').clear();
+              cy.wrap($row).find('[aria-label="Label name"]').clear();
             } else {
-              cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelName+'"]').clear().type(labelName);
+              cy.wrap($row).find('[aria-label="Label name"]').clear().type(labelName);
             }
             if (!labelValue){
-              cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelValue+'"]').clear();
+              cy.wrap($row).find('[aria-label="Label value"]').clear();
             } else {
-              cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelValue+'"]').clear().type(labelValue);
+              cy.wrap($row).find('[aria-label="Label value"]').clear().type(labelValue);
             }
           }
         }
         else{
           if (!labelName){
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelName+'"]').clear();
+            cy.wrap($row).find('[aria-label="Label name"]').clear();
           } else {
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelName+'"]').clear().type(labelName);
+            cy.wrap($row).find('[aria-label="Label name"]').clear().type(labelName);
           }
           if (!labelValue){
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelValue+'"]').clear();
+            cy.wrap($row).find('[aria-label="Label value"]').clear();
           } else {
-            cy.wrap($row).find('[data-test="'+DataTestIDs.SilencesPageFormTestIDs.LabelValue+'"]').clear().type(labelValue);
+            cy.wrap($row).find('[aria-label="Label value"]').clear().type(labelValue);
           }
         }
       })

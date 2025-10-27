@@ -13,7 +13,7 @@ export const silenceDetailsPage = {
 
   clickOnFiringAlerts: (alertname: string) => {
     cy.log('silenceDetailsPage.clickOnFiringAlerts');
-    cy.byTestID(DataTestIDs.AlertResourceLink)
+    cy.byTestID('firing-alerts')
       .first()
       .should('have.text', alertname)
       .click();
@@ -22,27 +22,27 @@ export const silenceDetailsPage = {
   clickActions: (toOpen: boolean) => {
     cy.log('silenceDetailsPage.clickActions');
     if (toOpen) {
-      cy.byTestID(DataTestIDs.KebabDropdownButton).contains('Actions').click();
+      cy.byAriaLabel('kebab dropdown toggle').should('be.visible').click();
     }
   },
 
   assertActionsExpiredAlert: () => {
     cy.log('silenceDetailsPage.assertActionsExpiredAlert');
     silenceDetailsPage.clickActions(true);
-    cy.byTestID(DataTestIDs.SilenceRecreateDropdownItem).should('be.visible');
+    cy.bySemanticElement('button', 'Recreate silence').should('be.visible');
   },
 
   assertActionsSilencedAlert: () => {
     cy.log('silenceDetailsPage.assertActionsExpiredAlert');
     silenceDetailsPage.clickActions(true);
-    cy.byTestID(DataTestIDs.SilenceEditDropdownItem).should('be.visible');
-    cy.byTestID(DataTestIDs.SilenceExpireDropdownItem).should('be.visible');
+    cy.bySemanticElement('button', 'Edit silence').should('be.visible');
+    cy.bySemanticElement('button', 'Expire silence').should('be.visible');
   },
 
   editSilence: (toOpen: boolean) => {
     cy.log('silenceDetailsPage.editSilence');
     silenceDetailsPage.clickActions(toOpen);
-    cy.byTestID(DataTestIDs.SilenceEditDropdownItem).should('be.visible').click();
+    cy.bySemanticElement('button', 'Edit silence').should('be.visible').click();
   },
 
   /**
@@ -53,14 +53,14 @@ export const silenceDetailsPage = {
   expireSilence: (toOpen: boolean, yes: boolean) => {
     cy.log('silenceDetailsPage.expireSilence');
     silenceDetailsPage.clickActions(toOpen);
-    cy.byTestID(DataTestIDs.SilenceExpireDropdownItem).should('be.visible').click();
+    cy.bySemanticElement('button', 'Expire silence').should('be.visible').click();
     commonPages.confirmExpireAlert(yes);
   },
 
   recreateSilence: (toOpen: boolean) => {
     cy.log('silenceDetailsPage.recreateSilence');
     silenceDetailsPage.clickActions(toOpen);
-    cy.byTestID(DataTestIDs.SilenceRecreateDropdownItem).should('be.visible').click();
+    cy.bySemanticElement('button', 'Recreate silence').should('be.visible').click();
   },
 
   clickSilencesBreadcrumb:() => {

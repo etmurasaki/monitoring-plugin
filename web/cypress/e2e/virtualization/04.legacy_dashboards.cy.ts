@@ -1,9 +1,13 @@
-import { Classes } from '../../../src/components/data-test';
-import { commonPages } from '../../views/common';
+import { runAllRegressionLegacyDashboardsTests } from '../../support/monitoring/03.reg_legacy_dashboards.cy';
 import { nav } from '../../views/nav';
 import { guidedTour } from '../../views/tour';
 
 // Set constants for the operators that need to be installed for tests.
+const MP = {
+  namespace: 'openshift-monitoring',
+  operatorName: 'Cluster Monitoring Operator',
+};
+
 const KBV = {
   namespace: 'openshift-cnv',
   packageName: 'kubevirt-hyperconverged',
@@ -18,7 +22,18 @@ const KBV = {
   }
 };
 
-describe('IVT: Monitoring UIPlugin + Virtualization', () => {
+describe('Setting up Monitoring Plugin', () => {
+
+  before(() => {
+    cy.beforeBlock(MP);
+  });
+
+  it('1. Setting up Monitoring Plugin', () => {
+    cy.log('Setting up Monitoring Plugin');
+  });
+});
+
+describe('Installation: Virtualization', () => {
 
   before(() => {
     cy.beforeBlockVirtualization(KBV);
@@ -29,12 +44,22 @@ describe('IVT: Monitoring UIPlugin + Virtualization', () => {
     cy.switchPerspective('Virtualization');
     cy.byAriaLabel('Welcome modal').should('be.visible');
     guidedTour.closeKubevirtTour();
-    cy.switchPerspective('Administrator');
+  });
+});
 
+describe('Regression: Monitoring - Legacy Dashboards (Virtualization)', () => {
+
+  beforeEach(() => {
+    cy.visit('/');
+    cy.validateLogin();
+    cy.switchPerspective('Virtualization');
+    guidedTour.closeKubevirtTour();
+    nav.sidenav.clickNavLink(['Observe', 'Dashboards']);
   });
 
-  /**
-   * TODO: To be replaced by COO validation such as Dashboards (Perses) scenarios
-   */
+  runAllRegressionLegacyDashboardsTests({
+    name: 'Virtualization',
+  });
+
 
 });

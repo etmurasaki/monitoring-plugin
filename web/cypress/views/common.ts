@@ -34,43 +34,40 @@ export const commonPages = {
     cy.byPFRole('dialog').should('be.visible');
 
     if (yes) {
-      cy.byTestID(DataTestIDs.ExpireSilenceButton).should('be.visible').click({force: true});
+      cy.bySemanticElement('button', 'Expire silence').should('be.visible').click({force: true});
     } else {
-      cy.byTestID(DataTestIDs.CancelButton).should('be.visible').click({force: true});
+      cy.bySemanticElement('button', 'Cancel').should('be.visible').click({force: true});
     };
-    cy.byTestID(DataTestIDs.ExpireSilenceButton).should('not.exist');
+    cy.bySemanticElement('button', 'Expire silence').should('not.exist');
   },
 
   detailsPage: {
     alert: (alert: string) => {
       cy.log('commonPages.detailsPage.alert');
-      cy.byTestID(DataTestIDs.AlertResourceIcon).contains('A');
-      cy.byTestID(DataTestIDs.SilenceButton).should('be.visible');
+      cy.byClass('co-m-resource-icon co-m-resource-alert').contains('A').should('be.visible');
+      cy.bySemanticElement('button', 'Silence alert').should('be.visible');
       detailsPage.sectionHeaderShouldExist('Alert details');
-      cy.byTestID(DataTestIDs.AlertingRuleResourceLink).scrollIntoView();
-      cy.byTestID(DataTestIDs.AlertingRuleResourceIcon).contains('AR').should('be.visible');
-      cy.byTestID(DataTestIDs.AlertingRuleResourceLink).contains(alert).should('be.visible');
-
+      cy.byTestID('alert-rules-detail-resource-link').scrollIntoView();
+      cy.byClass('co-m-resource-icon co-m-resource-alertrule').contains('AR').should('be.visible');
+      cy.byTestID('alert-rules-detail-resource-link').contains(alert).should('be.visible');
     },
     alertRule: () => {
       cy.log('commonPages.detailsPage.alertRule');
-      cy.byTestID(DataTestIDs.AlertingRuleResourceIcon).contains('AR').should('be.visible');
-      cy.byTestID(DataTestIDs.Expression).should('be.visible');
-      cy.byTestID(DataTestIDs.AlertResourceLink).scrollIntoView();
-      cy.byTestID(DataTestIDs.AlertResourceLink).should('have.length.at.least', 1);
+      cy.byClass('co-m-resource-icon co-m-resource-alertrule').contains('AR').should('be.visible');
+      cy.byClass('pf-v6-c-code-block__content').should('be.visible');
+      cy.byTestID('alert-resource-link').should('have.length.at.least', 1);
     },
     common: (alert: string, severity: string) => {
       cy.log('commonPages.detailsPage.common');
       commonPages.titleShouldHaveText(alert);
-      cy.byTestID(DataTestIDs.MetricHideShowGraphButton).contains('Hide graph').should('be.visible');
-      // cy.byTestID(DataTestIDs.MetricGraph).should('be.visible');
-      cy.byTestID(DataTestIDs.MetricResetZoomButton).should('be.visible');
+      cy.bySemanticElement('button', 'Hide graph').should('be.visible');
+      cy.bySemanticElement('button', 'Reset zoom').should('be.visible');
       cy.byAriaLabel('Inspect').should('be.visible'); //pf-5 cy.byAriaLabel('View in Metrics').should('be.visible').click(); 
     },
     administration_clusterSettings: () => {
       cy.log('commonPages.detailsPage.administration_clusterSettings');
       cy.byLegacyTestID('horizontal-link-Configuration').should('be.visible').click();
-      cy.byLegacyTestID('item-filter', { timeout: 250000 }).should('be.visible').type('Alertmanager')
+      cy.byLegacyTestID('item-filter', { timeout: 500000 }).should('be.visible').type('Alertmanager')
       cy.bySemanticElement('a').contains('Alertmanager').should('be.visible').click();
       cy.bySemanticElement('button').contains('Create Receiver').should('be.visible');
     },

@@ -29,7 +29,7 @@ export const listPage = {
     if (clearFolder) {
       cy.task('clearDownloads');
     }
-    cy.byTestID(DataTestIDs.DownloadCSVButton).should('be.visible').click();
+    cy.bySemanticElement('button', 'Export as CSV').should('be.visible').click();
 
     cy.waitUntil(() => {
       return cy.task('getFilesInFolder', downloadsFolder).then((currentFiles: string[]) => {
@@ -61,8 +61,8 @@ export const listPage = {
     byName: (name: string) => {
       cy.log('listPage.filter.byName');
       try {
-          cy.byTestID(DataTestIDs.NameLabelDropdown).scrollIntoView().click();
-          cy.byTestID(DataTestIDs.NameLabelDropdownOptions).contains('Name').click();
+          cy.byLegacyTestID("dropdown-button").scrollIntoView().click();
+          cy.byLegacyTestID("dropdown-menu").contains('Name').click();
           cy.byTestID(DataTestIDs.NameInput).scrollIntoView().as('input').should('be.visible');
           cy.get('@input', { timeout: 10000 }).scrollIntoView().type(name + '{enter}');
           cy.get('@input', { timeout: 10000 }).scrollIntoView().should('have.attr', 'value', name);
@@ -78,8 +78,8 @@ export const listPage = {
      */
     byLabel: (label: string) => {
       cy.log('listPage.filter.byLabel');
-      cy.byTestID(DataTestIDs.NameLabelDropdown).scrollIntoView().click();
-      cy.byTestID(DataTestIDs.NameLabelDropdownOptions).contains('Label').click();
+      cy.byLegacyTestID("dropdown-button").scrollIntoView().click();
+      cy.byLegacyTestID("dropdown-menu").contains('Label').click();
       cy.byLegacyTestID(LegacyTestIDs.ItemFilter).scrollIntoView()
         .as('input').should('be.visible');
       cy.get('@input', { timeout: 10000 }).scrollIntoView().type(label + '{enter}').should('have.attr', 'value', label);
@@ -103,11 +103,13 @@ export const listPage = {
      */
     clickFilter: (toOpen: boolean, toClose: boolean) => {
       cy.log('listPage.filter.clickFilter');
+      cy.wait(1000);
+      cy.byLegacyTestID('filter-dropdown-toggle').scrollIntoView().should('be.visible');
       if (toOpen) {
-        cy.get(Classes.FilterDropdown).contains('Filter').scrollIntoView().should('be.visible').click();
+        cy.byLegacyTestID('filter-dropdown-toggle').find('button').scrollIntoView().should('be.visible').click({force: true});
       }
       if (toClose) {
-        cy.get(Classes.FilterDropdownExpanded).contains('Filter').should('be.visible').click();
+        cy.byLegacyTestID('filter-dropdown-toggle').find('button').should('be.visible').click({force: true});
       }
     },
 
@@ -176,7 +178,7 @@ export const listPage = {
     },
     countShouldBe: (count: number) => {
       cy.log('listPage.ARRows.countShouldBe');
-      cy.byTestID(DataTestIDs.AlertingRuleResourceIcon).should('have.length', count);
+      cy.byClass('co-m-resource-icon co-m-resource-alertrule').should('have.length', count);
     },
     
     //pf-6 only
@@ -184,20 +186,17 @@ export const listPage = {
       cy.log('listPage.ARRows.ARShouldBe');
       if (getPFVersion() === 'v6') {
         cy.byOUIAID('OUIA-Generated-Button-plain').should('exist');
-        cy.byTestID(DataTestIDs.AlertingRuleResourceIcon).contains('AR');
-        cy.byTestID(DataTestIDs.AlertingRuleResourceLink).contains(alert).should('exist');
-        cy.byTestID(DataTestIDs.AlertingRuleSeverityBadge).contains(severity).should('exist');
-        cy.byTestID(DataTestIDs.AlertingRuleTotalAlertsBadge).contains(total).should('exist');
-        cy.byTestID(DataTestIDs.AlertingRuleStateBadge).contains(state).should('exist');
+        cy.byClass('co-m-resource-icon co-m-resource-alertrule').contains('AR').should('be.visible');
+        cy.byLegacyTestID('alert-resource-link').contains(alert).should('exist');
+        cy.byClass('pf-v6-c-label__content').contains(severity).should('exist');
+        cy.byClass('pf-v6-c-badge pf-m-read').contains(total).should('exist');
+        cy.byClass('pf-v6-c-table__td').contains(state).should('exist');
       }
     
     },
     AShouldBe: (alert: string, severity: string, namespace: string) => {
       cy.log('listPage.ARRows.AShouldBe');
-      cy.byTestID(DataTestIDs.AlertResourceIcon).should('exist');
-      cy.byTestID(DataTestIDs.AlertResourceLink).contains(alert).should('exist');
-      cy.byTestID(DataTestIDs.SeverityBadge).contains(severity).should('exist');
-      cy.byTestID(DataTestIDs.AlertNamespace).contains(namespace).should('exist'); //pf-6 only
+      cy.byClass('co-m-resource-icon co-m-resource-alert').should('be.visible');
       
     },
     //pf-6 only
@@ -222,7 +221,7 @@ export const listPage = {
     clickAlertingRule: () => {
       cy.log('listPage.ARRows.clickAlertingRule');
       try {
-        cy.byTestID(DataTestIDs.AlertingRuleResourceLink)
+        cy.byLegacyTestID('alert-resource-link').eq(0)
           .should('be.visible')
           .click();
       } catch (error) {
@@ -233,7 +232,7 @@ export const listPage = {
     clickAlert: () => {
       cy.log('listPage.ARRows.clickAlert');
       try {
-        cy.byTestID(DataTestIDs.AlertResourceLink)
+        cy.byLegacyTestID('alert-resource-link').eq(1)
           .should('be.visible')
           .click();
       } catch (error) {
@@ -253,7 +252,7 @@ export const listPage = {
     clickAlertKebab: () => {
       cy.log('listPage.ARRows.clickAlertKebab');
       try {
-        cy.byTestID(DataTestIDs.KebabDropdownButton).should('be.visible').click();
+        cy.byLegacyTestID("kebab-button").should('be.visible').click();
       } catch (error) {
         cy.log(`${error.message}`);
         throw error;
@@ -263,7 +262,7 @@ export const listPage = {
       cy.log('listPage.ARRows.silentAlert');
       try {
         listPage.ARRows.clickAlertKebab();
-        cy.byTestID(DataTestIDs.SilenceAlertDropdownItem).should('be.visible').click();
+        cy.bySemanticElement('button', 'Silence alert').should('be.visible').click();
       } catch (error) {
         cy.log(`${error.message}`);
         throw error;

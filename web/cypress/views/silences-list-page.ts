@@ -5,8 +5,8 @@ export const silencesListPage = {
 
   shouldBeLoaded: () => {
     cy.log('silencesListPage.shouldBeLoaded');
-    cy.byTestID(DataTestIDs.SilenceButton).should('be.visible');
-    cy.byTestID(DataTestIDs.SilenceResourceIcon).contains('S');
+    cy.bySemanticElement('button', 'Create silence').should('be.visible');
+    cy.byClass('co-m-resource-icon co-m-resource-silence').contains('S').should('be.visible');
     cy.get('table').find(Classes.TableHeaderColumn).contains('Name').should('be.visible');
     cy.get('table').find(Classes.TableHeaderColumn).contains('Firing alerts').should('be.visible');
     cy.get('table').find(Classes.TableHeaderColumn).contains('State').should('be.visible');
@@ -31,7 +31,7 @@ export const silencesListPage = {
 
   createSilence: () => {
     cy.log('silencesListPage.createSilence');
-    cy.byTestID(DataTestIDs.SilenceButton).should('be.visible').click();
+    cy.bySemanticElement('button', 'Create silence').should('be.visible').click();
   },
 
   
@@ -59,42 +59,42 @@ export const silencesListPage = {
     shouldBe: (alert: string, state: string) => {
       cy.log('silencesListPage.rows.shouldBe');
       cy.get('#'+LegacyTestIDs.SelectAllSilencesCheckbox).should('be.visible');
-      cy.byTestID(DataTestIDs.SilenceResourceIcon).contains('S');
-      cy.byTestID(DataTestIDs.SilenceResourceLink).contains(alert).should('be.visible');
+      cy.byClass('co-m-resource-icon co-m-resource-silence').contains('S').should('be.visible');
+      cy.byLegacyTestID(DataTestIDs.SilenceResourceLink).contains(alert).should('be.visible');
       cy.get(Classes.SilenceState).eq(0).contains(state).should('be.visible');
     },
 
     clickSilencedAlert: (alert: string) => {
       cy.log('silencesListPage.rows.clickSilencedAlert');
-      cy.byTestID(DataTestIDs.SilenceResourceLink).contains(alert).should('be.visible').click();
+      cy.byLegacyTestID(DataTestIDs.SilenceResourceLink).contains(alert).should('be.visible').click();
     },
 
     assertSilencedAlertKebab: () => {
       cy.log('silencesListPage.rows.assertSilencedAlertKebab');
       silencesListPage.rows.clickAlertKebab();
-      cy.byTestID(DataTestIDs.SilenceEditDropdownItem).should('be.visible');
-      cy.byTestID(DataTestIDs.SilenceExpireDropdownItem).should('be.visible');
+      cy.bySemanticElement('button', 'Edit silence').should('be.visible');
+      cy.bySemanticElement('button', 'Expire silence').should('be.visible');
     },
 
     assertExpiredAlertKebab: (index: string) => {
       cy.log('silencesListPage.rows.assertExpiredAlertKebab');
       if (!index) {
-        cy.byTestID(DataTestIDs.KebabDropdownButton).should('be.visible').click();
+        cy.byAriaLabel('kebab dropdown toggle').should('be.visible').click();
       } else {
-        cy.byTestID(DataTestIDs.KebabDropdownButton).eq(Number(index)).should('be.visible').click();
+        cy.byAriaLabel('kebab dropdown toggle').eq(Number(index)).should('be.visible').click();
       }
-      cy.byTestID(DataTestIDs.SilenceRecreateDropdownItem).should('be.visible');
+      cy.bySemanticElement('button', 'Recreate silence').should('be.visible');
     },
 
     clickAlertKebab: () => {
       cy.log('silencesListPage.rows.clickAlertKebab');
-      cy.byTestID(DataTestIDs.KebabDropdownButton).should('be.visible').click();
+      cy.byAriaLabel('kebab dropdown toggle').should('be.visible').click();
     },
 
     editSilence: () => {
       cy.log('silencesListPage.rows.editSilence');
       silencesListPage.rows.clickAlertKebab();
-      cy.byTestID(DataTestIDs.SilenceEditDropdownItem).should('be.visible').click();
+      cy.bySemanticElement('button', 'Edit silence').should('be.visible').click();
 
     },
     /**
@@ -103,7 +103,7 @@ export const silencesListPage = {
     expireSilence: (yes: boolean) => {
       cy.log('silencesListPage.rows.expireSilence');
       silencesListPage.rows.clickAlertKebab();
-      cy.byTestID(DataTestIDs.SilenceExpireDropdownItem).should('be.visible').click();
+      cy.bySemanticElement('button', 'Expire silence').should('be.visible').click();
       commonPages.confirmExpireAlert(yes);
     }
   },

@@ -8,43 +8,40 @@ export const legacyDashboardsPage = {
   shouldBeLoaded: () => {
     cy.log('legacyDashboardsPage.shouldBeLoaded');
     commonPages.titleShouldHaveText(MonitoringPageTitles.DASHBOARDS);
-    cy.byTestID(LegacyDashboardPageTestIDs.TimeRangeDropdown).contains(LegacyDashboardsTimeRange.LAST_30_MINUTES).should('be.visible');
-    cy.byTestID(LegacyDashboardPageTestIDs.PollIntervalDropdown).contains(MonitoringRefreshInterval.THIRTY_SECONDS).should('be.visible');
-    // cy.byLegacyTestID('namespace-bar-dropdown').find('span').invoke('text').then((text) => {
+    cy.bySemanticElement('button', 'Last 30 minutes').should('be.visible');
+    cy.bySemanticElement('button', '30 seconds').should('be.visible');
     //   if (text === 'Project: All Projects') {
-    //     cy.byTestID(LegacyDashboardPageTestIDs.DashboardDropdown).find('input').should('have.value', LegacyDashboardsDashboardDropdown.API_PERFORMANCE[0]).and('be.visible');
     //   } else {
-    //     cy.byTestID(LegacyDashboardPageTestIDs.DashboardDropdown).find('input').should('have.value', LegacyDashboardsDashboardDropdownNamespace.K8S_COMPUTE_RESOURCES_NAMESPACE_PODS[0]).and('be.visible');
     //   }
     // });
   },
 
   clickTimeRangeDropdown: (timeRange: LegacyDashboardsTimeRange) => {
     cy.log('legacyDashboardsPage.clickTimeRangeDropdown');
-    cy.byTestID(LegacyDashboardPageTestIDs.TimeRangeDropdown).find('button').should('be.visible').click();
+    cy.bySemanticElement('button', 'Last 30 minutes').should('be.visible').click();
     cy.get('#'+LegacyDashboardPageTestIDs.DashboardTimeRangeDropdownMenu).find(Classes.MenuItem).contains(timeRange).should('be.visible').click();
   },
 
   timeRangeDropdownAssertion: () => {
     cy.log('legacyDashboardsPage.timeRangeDropdownAssertion');
-    cy.byTestID(LegacyDashboardPageTestIDs.TimeRangeDropdown).find('button').should('be.visible').click();
+    cy.bySemanticElement('button', 'Last 30 minutes').should('be.visible').click();
     const timeRanges = Object.values(LegacyDashboardsTimeRange);
     timeRanges.forEach((timeRange) => {
       cy.log('Time range: ' + timeRange);
-      cy.get('#'+LegacyDashboardPageTestIDs.DashboardTimeRangeDropdownMenu).find(Classes.MenuItem).contains(timeRange).should('be.visible');
+      cy.byClass('pf-v6-c-menu__item-text').contains(timeRange).should('be.visible');
     });
-    cy.byTestID(LegacyDashboardPageTestIDs.TimeRangeDropdown).find('button').should('be.visible').click();
+    cy.bySemanticElement('button', 'Last 30 minutes').should('be.visible').click();
   },
 
   clickRefreshIntervalDropdown: (interval: MonitoringRefreshInterval) => {
     cy.log('legacyDashboardsPage.clickRefreshIntervalDropdown');
-    cy.byTestID(LegacyDashboardPageTestIDs.PollIntervalDropdown).find('button').should('be.visible').click();
+    cy.bySemanticElement('button', '30 seconds').should('be.visible').click();
     cy.get('#'+LegacyDashboardPageTestIDs.DashboardRefreshIntervalDropdownMenu).find(Classes.MenuItem).contains(interval).should('be.visible').click();
   },
 
   refreshIntervalDropdownAssertion: () => {
     cy.log('legacyDashboardsPage.refreshIntervalDropdownAssertion');
-    cy.byTestID(LegacyDashboardPageTestIDs.PollIntervalDropdown).find('button').should('be.visible').click();
+    cy.bySemanticElement('button', '30 seconds').should('be.visible').click();
 
     const intervals = Object.values(MonitoringRefreshInterval);
     intervals.forEach((interval) => {
@@ -52,7 +49,7 @@ export const legacyDashboardsPage = {
       cy.get('#'+LegacyDashboardPageTestIDs.DashboardRefreshIntervalDropdownMenu).find(Classes.MenuItem).contains(interval).should('be.visible');
     });
 
-    cy.byTestID(LegacyDashboardPageTestIDs.PollIntervalDropdown).find('button').should('be.visible').click();
+    cy.bySemanticElement('button', '30 seconds').should('be.visible').click();
   },
 
   clickDashboardDropdown: (dashboard: keyof typeof LegacyDashboardsDashboardDropdown) => {
@@ -101,18 +98,18 @@ export const legacyDashboardsPage = {
 
   clickKebabDropdown: (index: number) => {
     cy.log('legacyDashboardsPage.clickKebabDropdown');
-    cy.byTestID(DataTestIDs.KebabDropdownButton).eq(index).click();
+    cy.byLegacyTestID("kebab-button").eq(index).click();
   },
   
   exportAsCSV: (clearFolder: boolean, fileNameExp: string) => {
-    cy.log('metricsPage.exportAsCSV');
+    cy.log('legacyDashboardsPage.exportAsCSV');
     let downloadedFileName: string | null = null;
     const downloadsFolder = Cypress.config('downloadsFolder');
     const expectedFileNamePattern = fileNameExp;
     if (clearFolder) {
       cy.task('clearDownloads');
     }
-    cy.byTestID(LegacyDashboardPageTestIDs.ExportAsCsv).should('be.visible').click();
+    cy.byClass('pf-v6-c-menu__item-text').contains('Export as CSV').should('be.visible').click();
 
     cy.waitUntil(() => {
       return cy.task('getFilesInFolder', downloadsFolder).then((currentFiles: string[]) => {

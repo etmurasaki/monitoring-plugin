@@ -26,9 +26,9 @@ export const detailsPage = {
 
   clickAlertDesc: (desc: string) => {
     cy.log('detailsPage.clickAlertDesc');
-    cy.byTestID(DataTestIDs.AlertResourceLink).scrollIntoView();
+    cy.byTestID('active-alerts').scrollIntoView();
     try {
-      cy.byTestID(DataTestIDs.AlertResourceLink).contains(desc).should('be.visible').click();
+      cy.byTestID('active-alerts').contains(desc).should('be.visible').click();
     } catch (error) {
       cy.log(`${error.message}`);
       throw error; 
@@ -64,7 +64,7 @@ export const detailsPage = {
   assertSilencedAlert: () => {
     cy.log('detailsPage.assertSilencedAlert');
     try {
-      cy.byTestID(DataTestIDs.SilenceButton).should('not.exist');
+      cy.bySemanticElement('button', 'Silence alert').should('not.exist');
       detailsPage.clickOnSilenceByKebab();
       cy.byPFRole('menuitem').contains('Edit silence').should('be.visible');
       cy.byPFRole('menuitem').contains('Expire silence').should('be.visible');
@@ -115,7 +115,7 @@ export const detailsPage = {
   },
   clickSilenceAlertButton:()=>{
     cy.log('detailsPage.clickSilenceAlertButton');
-    cy.byTestID(DataTestIDs.SilenceButton).should('be.visible').click();
+    cy.bySemanticElement('button', 'Silence alert').should('be.visible').click();
   },
 
   

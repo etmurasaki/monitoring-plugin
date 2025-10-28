@@ -6,78 +6,22 @@ import { nav } from '../../views/nav';
 import { silenceDetailsPage } from '../../views/silence-details-page';
 import { silencesListPage } from '../../views/silences-list-page';
 import { getValFromElement } from '../../views/utils';
-import { overviewPage } from '../../views/overview-page';
-import common = require('mocha/lib/interfaces/common');
 import { AlertsAlertState, SilenceComment, SilenceState, WatchdogAlert } from '../../fixtures/monitoring/constants';
-import { alerts } from '../../fixtures/monitoring/alert';
 import { alertingRuleListPage } from '../../views/alerting-rule-list-page';
-// Set constants for the operators that need to be installed for tests.
-const MP = {
-  namespace: 'openshift-monitoring',
-  operatorName: 'Cluster Monitoring Operator',
-};
+import { alerts } from '../../fixtures/monitoring/alert';
 
-describe('BVT: Monitoring', () => {
+export interface PerspectiveConfig {
+  name: string;
+  beforeEach?: () => void;
+}
 
-  before(() => {
-    cy.beforeBlock(MP);
-  });
+export function runBVTMonitoringTests(perspective: PerspectiveConfig) {
+  testBVTMonitoring(perspective);
+}
 
-  it('1. Admin perspective - Observe Menu', () => {
-    cy.visit('/');
-    cy.log('Admin perspective - Observe Menu and verify all submenus');
-    nav.sidenav.clickNavLink(['Administration', 'Cluster Settings']);
-    commonPages.detailsPage.administration_clusterSettings();
-    nav.sidenav.clickNavLink(['Observe', 'Alerting']);
-    commonPages.titleShouldHaveText('Alerting');
-    // cy.changeNamespace('All Projects');
-    nav.tabs.switchTab('Silences');
-    nav.sidenav.clickNavLink(['Observe', 'Metrics']);
-    commonPages.titleShouldHaveText('Metrics');
-    nav.sidenav.clickNavLink(['Observe', 'Dashboards']);
-    commonPages.titleShouldHaveText('Dashboards');
-    nav.sidenav.clickNavLink(['Observe', 'Targets']);
-    commonPages.titleShouldHaveText('Metrics targets');
+export function testBVTMonitoring(perspective: PerspectiveConfig) {
 
-
-  });
-  // TODO: Intercept Bell GET request to inject an alert (Watchdog to have it opened in Alert Details page?)
-  // it('Admin perspective - Bell > Alert details > Alerting rule details > Metrics flow', () => {
-  //   cy.visit('/');
-  //   commonPages.clickBellIcon();
-  //   commonPages.bellIconClickAlert('TargetDown');
-  //   commonPages.titleShouldHaveText('TargetDown')
-
-  // });
-
-
-  it('2. Admin perspective - Overview Page > Status - View alerts', () => {
-    cy.visit('/');
-    nav.sidenav.clickNavLink(['Home', 'Overview']);
-    overviewPage.clickStatusViewAlerts();
-    commonPages.titleShouldHaveText('Alerting');
-  });
-
-  //TODO: Intercept and inject a valid alert into status-card to be opened correctly to Alerting / Alerts page
-  // I couldn't make Watchdog working on status-card
-  // it('3. Admin perspective - Overview Page > Status - View details', () => {
-  //   cy.visit('/');
-  //   nav.sidenav.clickNavLink(['Home', 'Overview']);
-  //   overviewPage.clickStatusViewDetails(0);
-  //   detailsPage.sectionHeaderShouldExist('Alert details');
-  // });
-
-  it('4. Admin perspective - Cluster Utilization - Metrics', () => {
-    cy.visit('/');
-    nav.sidenav.clickNavLink(['Home', 'Overview']);
-    overviewPage.clickClusterUtilizationViewCPU();
-    commonPages.titleShouldHaveText('Metrics');
-    // commonPages.projectDropdownShouldExist();
-  });
-
-
-  it('5. Admin perspective - Alerting > Alerting Details page > Alerting Rule > Metrics', () => {
-    cy.visit('/');
+  it(`${perspective.name} perspective - Alerting > Alerting Details page > Alerting Rule > Metrics`, () => {
     cy.log('5.1. use sidebar nav to go to Observe > Alerting');
     nav.sidenav.clickNavLink(['Observe', 'Alerting']);
     commonPages.titleShouldHaveText('Alerting');
@@ -137,23 +81,22 @@ describe('BVT: Monitoring', () => {
     });
   });
 
-  it('6. Admin perspective - Creates and expires a Silence', () => {
-    cy.visit('/');
+  it(`${perspective.name} perspective - Creates and expires a Silence`, () => {
     cy.log('6.1 use sidebar nav to go to Observe > Alerting');
     nav.sidenav.clickNavLink(['Observe', 'Alerting']);
     alerts.getWatchdogAlert();
 
-    cy.log('6.3 filter to Watchdog alert');
+    cy.log('6.2 filter to Watchdog alert');
     nav.tabs.switchTab('Alerts');
     listPage.ARRows.shouldBeLoaded();
     listPage.filter.byName(`${WatchdogAlert.ALERTNAME}`);
     listPage.ARRows.countShouldBe(1);
 
-    cy.log('6.4 silence alert');
+    cy.log('6.3 silence alert');
     listPage.ARRows.expandRow();
     listPage.ARRows.silenceAlert();
 
-    cy.log('6.5 silence alert page');
+    cy.log('6.4 silence alert page');
     commonPages.titleShouldHaveText('Silence alert');
 
     // Launches create silence form
@@ -181,22 +124,22 @@ describe('BVT: Monitoring', () => {
     silenceAlertPage.clickSubmit();
 
     // After creating the Silence, should be redirected to its details page
-    cy.log('6.6 Assert Silence details page');
+    cy.log('6.5 Assert Silence details page');
     silenceDetailsPage.assertSilenceDetailsPage(`${WatchdogAlert.ALERTNAME}`, 'Silence details', 'alertname=Watchdog');
 
-    cy.log('6.7 Click on Firing alerts');
+    cy.log('6.6 Click on Firing alerts');
     silenceDetailsPage.clickOnFiringAlerts(`${WatchdogAlert.ALERTNAME}`);
     commonPages.titleShouldHaveText(`${WatchdogAlert.ALERTNAME}`);
     detailsPage.sectionHeaderShouldExist('Alert details');
     detailsPage.labelShouldExist('alertname=Watchdog');
 
-    cy.log('6.8 Click on Silenced by');
+    cy.log('6.7 Click on Silenced by');
     detailsPage.clickOnSilencedBy(`${WatchdogAlert.ALERTNAME}`);
     commonPages.titleShouldHaveText(`${WatchdogAlert.ALERTNAME}`);
     detailsPage.sectionHeaderShouldExist('Silence details');
     detailsPage.labelShouldExist('alertname=Watchdog');
 
-    cy.log('6.9 shows the silenced Alert in the Silenced Alerts list');
+    cy.log('6.8 shows the silenced Alert in the Silenced Alerts list');
     nav.sidenav.clickNavLink(['Observe', 'Alerting']);
     nav.tabs.switchTab('Silences');
     silencesListPage.shouldBeLoaded();
@@ -207,31 +150,31 @@ describe('BVT: Monitoring', () => {
     listPage.filter.selectFilterOption(false, SilenceState.ACTIVE, true);
     silencesListPage.rows.shouldBe(`${WatchdogAlert.ALERTNAME}`, SilenceState.ACTIVE);
 
-    cy.log('6.9.1 verify on Alerting Rules list page again');
+    cy.log('6.8.1 verify on Alerting Rules list page again');
     nav.sidenav.clickNavLink(['Observe', 'Alerting']);
     nav.tabs.switchTab('Alerting rules');
     listPage.filter.byName(`${WatchdogAlert.ALERTNAME}`);
     alertingRuleListPage.ARShouldBe(`${WatchdogAlert.ALERTNAME}`, `${WatchdogAlert.SEVERITY}`, 1, AlertsAlertState.SILENCED);
 
-    cy.log('6.10 verify on Alerts list page again');
+    cy.log('6.9 verify on Alerts list page again');
     nav.sidenav.clickNavLink(['Observe', 'Alerting']);
     listPage.filter.clearAllFilters();
     listPage.filter.selectFilterOption(true, AlertsAlertState.SILENCED, true);
     listPage.filter.byName(`${WatchdogAlert.ALERTNAME}`);
     listPage.ARRows.ARShouldBe(`${WatchdogAlert.ALERTNAME}`, `${WatchdogAlert.SEVERITY}`, 1, AlertsAlertState.SILENCED);
 
-    cy.log('6.11 expires the Silence');
+    cy.log('6.10 expires the Silence');
     listPage.ARRows.expandRow();
     listPage.ARRows.clickAlert();
     detailsPage.clickOnSilencedBy(`${WatchdogAlert.ALERTNAME}`);
     silenceDetailsPage.expireSilence(true, true);
 
 
-    cy.log('6.12 verify on Alerts list page again');
+    cy.log('6.11 verify on Alerts list page again');
     nav.sidenav.clickNavLink(['Observe', 'Alerting']);
     listPage.filter.clearAllFilters();
     listPage.filter.byName(`${WatchdogAlert.ALERTNAME}`);
     listPage.ARRows.ARShouldBe(`${WatchdogAlert.ALERTNAME}`, `${WatchdogAlert.SEVERITY}`, 1, AlertsAlertState.FIRING);
 
   });
-});
+}

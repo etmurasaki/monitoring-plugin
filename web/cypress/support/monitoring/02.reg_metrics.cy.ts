@@ -1,28 +1,25 @@
-import { nav } from '../../../views/nav';
-import { metricsPage } from '../../../views/metrics';
-import { Classes, DataTestIDs, IDs } from '../../../../src/components/data-test';
-import { GraphTimespan, MetricGraphEmptyState, MetricsPagePredefinedQueries, MetricsPageQueryInput, MetricsPageQueryKebabDropdown, MetricsPageUnits } from '../../../fixtures/monitoring/constants';
-import common = require('mocha/lib/interfaces/common');
+import { nav } from '../../views/nav';
+import { metricsPage } from '../../views/metrics';
+import { Classes, DataTestIDs, IDs } from '../../../src/components/data-test';
+import { GraphTimespan, MetricGraphEmptyState, MetricsPagePredefinedQueries, MetricsPageQueryInput, MetricsPageQueryKebabDropdown, MetricsPageUnits } from '../../fixtures/monitoring/constants';
 // Set constants for the operators that need to be installed for tests.
 const MP = {
   namespace: 'openshift-monitoring',
   operatorName: 'Cluster Monitoring Operator',
 };
 
-describe('Regression: Monitoring - Metrics', () => {
+export interface PerspectiveConfig {
+  name: string;
+  beforeEach?: () => void;
+}
 
-  before(() => {
-    cy.beforeBlock(MP);
-  });
+export function runAllRegressionMetricsTests(perspective: PerspectiveConfig) {
+  testMetricsRegression(perspective);
+}
+export function testMetricsRegression(perspective: PerspectiveConfig) {
 
-  // beforeEach(() => {
-  //   nav.sidenav.clickNavLink(['Observe', 'Alerting']);
-  //   cy.changeNamespace("All Projects");
-  // });
-
-  it('1. Admin perspective - Metrics', () => {
+  it(`1. ${perspective.name} perspective - Metrics`, () => {
     cy.log('1.1 Metrics page loaded');
-    nav.sidenav.clickNavLink(['Observe', 'Metrics']);
     metricsPage.shouldBeLoaded();
 
     cy.log('1.2 Units dropdown');
@@ -42,10 +39,8 @@ describe('Regression: Monitoring - Metrics', () => {
 
   });
 
-  it('2. Admin perspective - Metrics > Actions - No query added', () => {
+  it(`2. ${perspective.name} perspective - Metrics > Actions - No query added`, () => {
     cy.log('2.1 Only one query loaded');
-    cy.visit('/');
-    nav.sidenav.clickNavLink(['Observe', 'Metrics']);
     cy.byTestID(DataTestIDs.MetricsPageExpandCollapseRowButton).should('have.length', 1);
 
     cy.log('2.2 Actions >Add query');
@@ -83,10 +78,8 @@ describe('Regression: Monitoring - Metrics', () => {
 
   });
 
-  it('3. Admin perspective - Metrics > Actions - One query added', () => {
+  it(`3. ${perspective.name} perspective - Metrics > Actions - One query added`, () => {
     cy.log('3.1 Only one query loaded');
-    cy.visit('/');
-    nav.sidenav.clickNavLink(['Observe', 'Metrics']);
     metricsPage.clickPredefinedQuery(MetricsPagePredefinedQueries.FILESYSTEM_USAGE);
     metricsPage.shouldBeLoadedWithGraph();
 
@@ -140,10 +133,8 @@ describe('Regression: Monitoring - Metrics', () => {
 
   });
 
-  it('4. Admin perspective - Metrics > Insert Example Query', () => {
+  it(`4. ${perspective.name} perspective - Metrics > Insert Example Query`, () => {
     cy.log('4.1 Insert Example Query');
-    cy.visit('/');
-    nav.sidenav.clickNavLink(['Observe', 'Metrics']);
     metricsPage.clickInsertExampleQuery();
     metricsPage.shouldBeLoadedWithGraph();
     cy.get(Classes.MetricsPageQueryInput).eq(0).should('contain', MetricsPageQueryInput.INSERT_EXAMPLE_QUERY);
@@ -183,11 +174,9 @@ describe('Regression: Monitoring - Metrics', () => {
 
     cy.log('4.7 Hide Graph Button');
     metricsPage.clickHideGraphButton();
-    // cy.byTestID(DataTestIDs.MetricGraph).should('not.exist');
 
     cy.log('4.8 Show Graph Button');
     metricsPage.clickShowGraphButton();
-    // cy.byTestID(DataTestIDs.MetricGraph).should('be.visible');
 
     cy.log('4.9 Stacked Checkbox');
     cy.byTestID(DataTestIDs.MetricStackedCheckbox).should('not.exist');
@@ -207,7 +196,7 @@ describe('Regression: Monitoring - Metrics', () => {
   /**
    * TODO: uncomment when this bug gets fixed   
    * https://issues.redhat.com/browse/OU-974 - [Metrics] - Units - undefined showing in Y axis and tooltip
-  it('5. Admin perspective - Metrics > Units', () => {
+  it(`5. ${perspective.name} perspective - Metrics > Units`, () => {
     cy.log('5.1 Preparation to test Units dropdown');
     cy.visit('/monitoring/query-browser');
     metricsPage.clickInsertExampleQuery();
@@ -221,11 +210,8 @@ describe('Regression: Monitoring - Metrics', () => {
   });
   */
 
-  it('6. Admin perspective - Metrics > Add Query - Run Queries - Kebab icon', () => {
+  it(`6. ${perspective.name} perspective - Metrics > Add Query - Run Queries - Kebab icon`, () => {
     cy.log('6.1 Preparation to test Add Query button');
-    cy.visit('/');
-    nav.sidenav.clickNavLink(['Observe', 'Metrics']);
-    metricsPage.shouldBeLoaded();
     cy.byTestID(DataTestIDs.MetricsPageExpandCollapseRowButton).should('have.length', 1);
     metricsPage.clickInsertExampleQuery();
     cy.get(Classes.MetricsPageQueryInput).eq(0).should('contain', MetricsPageQueryInput.INSERT_EXAMPLE_QUERY);
@@ -262,7 +248,6 @@ describe('Regression: Monitoring - Metrics', () => {
     metricsPage.expandCollapseRowAssertion(true, 1, true, true);
     cy.get(Classes.MetricsPageQueryInput).eq(0).should('contain', MetricsPageQueryInput.VECTOR_QUERY);
     cy.get(Classes.MetricsPageQueryInput).eq(1).should('contain', MetricsPageQueryInput.INSERT_EXAMPLE_QUERY);
-    // cy.byTestID(DataTestIDs.MetricGraph).should('be.visible');
     metricsPage.clickKebabDropdown(0);
     cy.get(Classes.MenuItemDisabled).contains(MetricsPageQueryKebabDropdown.HIDE_ALL_SERIES).should('be.visible');
     cy.byTestID(DataTestIDs.MetricsPageExportCsvDropdownItem).should('not.exist');
@@ -275,7 +260,6 @@ describe('Regression: Monitoring - Metrics', () => {
     metricsPage.expandCollapseRowAssertion(true, 1, true, true);
     cy.get(Classes.MetricsPageQueryInput).eq(0).should('contain', MetricsPageQueryInput.VECTOR_QUERY);
     cy.get(Classes.MetricsPageQueryInput).eq(1).should('contain', MetricsPageQueryInput.INSERT_EXAMPLE_QUERY);
-    // cy.byTestID(DataTestIDs.MetricGraph).should('be.visible');
     metricsPage.clickKebabDropdown(0);
     cy.byTestID(DataTestIDs.MetricsPageHideShowAllSeriesDropdownItem).contains(MetricsPageQueryKebabDropdown.HIDE_ALL_SERIES).should('be.visible');
     cy.byTestID(DataTestIDs.MetricsPageExportCsvDropdownItem).contains(MetricsPageQueryKebabDropdown.EXPORT_AS_CSV).should('be.visible');
@@ -301,7 +285,6 @@ describe('Regression: Monitoring - Metrics', () => {
     metricsPage.clickKebabDropdown(1);
     cy.get(Classes.MetricsPageQueryInput).eq(0).should('contain', MetricsPageQueryInput.VECTOR_QUERY);
     cy.get(Classes.MetricsPageQueryInput).eq(1).should('contain', MetricsPageQueryInput.INSERT_EXAMPLE_QUERY);
-    // cy.byTestID(DataTestIDs.MetricGraph).should('not.exist');
     cy.byTestID(DataTestIDs.MetricsPageNoQueryEnteredTitle).should('be.visible');
     cy.byTestID(DataTestIDs.MetricsPageNoQueryEntered).should('be.visible');
     cy.byTestID(DataTestIDs.MetricsPageInsertExampleQueryButton).should('be.visible');
@@ -326,7 +309,6 @@ describe('Regression: Monitoring - Metrics', () => {
     metricsPage.clickKebabDropdown(1);
     cy.get(Classes.MetricsPageQueryInput).eq(0).should('contain', MetricsPageQueryInput.VECTOR_QUERY);
     cy.get(Classes.MetricsPageQueryInput).eq(1).should('contain', MetricsPageQueryInput.INSERT_EXAMPLE_QUERY);
-    // cy.byTestID(DataTestIDs.MetricGraph).scrollIntoView().should('be.visible');
 
     cy.log('6.10 Kebab icon - Hide all series');
     metricsPage.clickKebabDropdown(1);
@@ -417,12 +399,9 @@ describe('Regression: Monitoring - Metrics', () => {
 
   });
 
-  it('7. Admin perspective - Metrics > Predefined Queries > Export as CSV', () => {
+  it(`7. ${perspective.name} perspective - Metrics > Predefined Queries > Export as CSV`, () => {
     //OCPBUGS-54316 - [4.16] Metrics "Export as CSV" is not working for all queries 
     cy.log('7.1 Predefined Queries');
-    cy.visit('/');
-    nav.sidenav.clickNavLink(['Observe', 'Metrics']);
-    metricsPage.shouldBeLoaded();
     metricsPage.clickPredefinedQuery(MetricsPagePredefinedQueries.CPU_USAGE);
     metricsPage.clickKebabDropdown(0);
     metricsPage.exportAsCSV(true, MetricsPageQueryInput.CPU_USAGE);
@@ -478,11 +457,8 @@ describe('Regression: Monitoring - Metrics', () => {
 
   });
 
-  it('8. Admin perspective - Metrics > Ungraphable results', () => {
+  it(`8. ${perspective.name} perspective - Metrics > Ungraphable results`, () => {
     cy.log('8.1 Ungraphable results');
-    cy.visit('/');
-    nav.sidenav.clickNavLink(['Observe', 'Metrics']);
-    metricsPage.shouldBeLoaded();
     metricsPage.clickPredefinedQuery(MetricsPagePredefinedQueries.CPU_USAGE);
     metricsPage.clickPredefinedQuery(MetricsPagePredefinedQueries.MEMORY_USAGE);
     metricsPage.clickPredefinedQuery(MetricsPagePredefinedQueries.FILESYSTEM_USAGE);
@@ -490,18 +466,14 @@ describe('Regression: Monitoring - Metrics', () => {
     metricsPage.clickPredefinedQuery(MetricsPagePredefinedQueries.TRANSMIT_BANDWIDTH);
     metricsPage.clickPredefinedQuery(MetricsPagePredefinedQueries.RATE_OF_RECEIVED_PACKETS);
     cy.bySemanticElement('h1').scrollIntoView().should('be.visible');
-    // cy.byLegacyTestID('namespace-bar-dropdown').scrollIntoView();
     
     cy.get(Classes.MetricsPageUngraphableResults).contains(MetricGraphEmptyState.UNGRAPHABLE_RESULTS).should('be.visible');
     cy.get(Classes.MetricsPageUngraphableResultsDescription).contains(MetricGraphEmptyState.UNGRAPHABLE_RESULTS_DESCRIPTION).should('be.visible');
     
   });
 
-  it('9. Admin perspective - Metrics > No Datapoints', () => {
+  it(`9. ${perspective.name} perspective - Metrics > No Datapoints`, () => {
     cy.log('9.1 No Datapoints');
-    cy.visit('/');
-    nav.sidenav.clickNavLink(['Observe', 'Metrics']);
-    metricsPage.shouldBeLoaded();
     metricsPage.enterQueryInput(0, 'aaaaaaaaaa');
     metricsPage.clickRunQueriesButton();
     cy.byTestID(DataTestIDs.MetricGraphNoDatapointsFound).scrollIntoView().contains(MetricGraphEmptyState.NO_DATAPOINTS_FOUND).should('be.visible');
@@ -514,15 +486,12 @@ describe('Regression: Monitoring - Metrics', () => {
     
   });
 
-  it('10. Admin perspective - Metrics > No Datapoints with alert', () => {
+  it(`10. ${perspective.name} perspective - Metrics > No Datapoints with alert`, () => {
     cy.log('10.1 No Datapoints with alert');
-    cy.visit('/');
-    nav.sidenav.clickNavLink(['Observe', 'Metrics']);
-    metricsPage.shouldBeLoaded();
     metricsPage.enterQueryInput(0, MetricsPageQueryInput.QUERY_WITH_ALERT);
     metricsPage.clickRunQueriesButton();
     cy.byOUIAID(DataTestIDs.MetricsGraphAlertDanger).should('be.visible');
   });
    
-});
+}
 

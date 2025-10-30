@@ -1,5 +1,5 @@
-import { runAllRegressionLegacyDashboardsTests } from '../../support/monitoring/03.reg_legacy_dashboards.cy';
 import { nav } from '../../views/nav';
+import { runBVTCOOPersesTests } from '../../support/perses/00.coo_bvt_perses.cy';
 import { guidedTour } from '../../views/tour';
 
 // Set constants for the operators that need to be installed for tests.
@@ -12,6 +12,7 @@ const MCP = {
     name: 'monitoring',
   },
 };
+
 const MP = {
   namespace: 'openshift-monitoring',
   operatorName: 'Cluster Monitoring Operator',
@@ -42,31 +43,32 @@ describe('Installation: COO and setting up Monitoring Plugin', () => {
   });
 });
 
-describe('IVT: Monitoring UIPlugin + Virtualization', () => {
+describe('Installation: Virtualization', () => {
 
   before(() => {
     cy.beforeBlockVirtualization(KBV);
   });
 
-  it('1. Virtualization perspective - Observe Menu', () => {
-    cy.log('Virtualization perspective - Observe Menu and verify all submenus');
+  it('1. Installation: Virtualization', () => {
+    cy.log('Installation: Virtualization');
     cy.switchPerspective('Virtualization');
     cy.byAriaLabel('Welcome modal').should('be.visible');
     guidedTour.closeKubevirtTour();
   });
 });
 
-describe('Regression: Monitoring - Legacy Dashboards (Virtualization)', () => {
+describe('IVT: COO - Dashboards (Perses) - Virtualization perspective', () => {
 
   beforeEach(() => {
     cy.visit('/');
+    guidedTour.close();
     cy.validateLogin();
     cy.switchPerspective('Virtualization');
     guidedTour.closeKubevirtTour();
-    nav.sidenav.clickNavLink(['Observe', 'Dashboards']);
+    nav.sidenav.clickNavLink(['Observe', 'Dashboards (Perses)']);
   });
 
-  runAllRegressionLegacyDashboardsTests({
+  runBVTCOOPersesTests({
     name: 'Virtualization',
   });
 

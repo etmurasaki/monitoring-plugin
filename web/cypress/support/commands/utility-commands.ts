@@ -57,10 +57,22 @@ Cypress.Commands.add('waitUntilWithCustomTimeout', (
 
   Cypress.Commands.add('changeNamespace', (namespace: string) => {
     cy.log('Changing Namespace to: ' + namespace);
-    cy.byLegacyTestID('namespace-bar-dropdown').find('button').scrollIntoView().should('be.visible').click();
-    cy.get('[data-test="showSystemSwitch"]').then(($element)=> {
-      if ($element.attr('data-checked-state') !== 'true') {
-        cy.byTestID('showSystemSwitch').siblings('span').eq(0).should('be.visible').click();
+    cy.get('body').then(($body) => {
+      const hasNamespaceBarDropdown = $body.find('[data-test="namespace-bar-dropdown"]').length > 0;
+      if (hasNamespaceBarDropdown) {
+        cy.byLegacyTestID('namespace-bar-dropdown').find('button').scrollIntoView().should('be.visible').click();
+      } else {
+        cy.byClass('pf-v6-c-menu-toggle co-namespace-dropdown__menu-toggle').scrollIntoView().should('be.visible').click();
+      }
+    });
+    cy.get('body').then(($body) => {
+      const hasShowSystemSwitch = $body.find('[data-test="showSystemSwitch"]').length > 0;
+      if (hasShowSystemSwitch) {
+        cy.get('[data-test="showSystemSwitch"]').then(($element)=> {
+          if ($element.attr('data-checked-state') !== 'true') {
+            cy.byTestID('showSystemSwitch').siblings('span').eq(0).should('be.visible').click();
+          }
+        });
       }
     });
     cy.byTestID('dropdown-text-filter').type(namespace);

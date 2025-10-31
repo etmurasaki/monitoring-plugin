@@ -19,8 +19,7 @@ const MP = {
 
 const KBV = {
   namespace: 'openshift-cnv',
-  packageName: 'kubevirt-hyperconverged',
-  operatorName: 'kubevirt-hyperconverged-operator.v4.19.6',
+  packageName: 'kubevirt-hyperconverged', 
   config: {
     kind: 'HyperConverged',
     name: 'kubevirt-hyperconverged',

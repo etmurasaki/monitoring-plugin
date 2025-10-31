@@ -1,6 +1,5 @@
-import { alerts } from '../../fixtures/monitoring/alert';
-import { runAllRegressionMetricsTests } from '../../support/monitoring/02.reg_metrics.cy';
 import { nav } from '../../views/nav';
+import { runBVTCOOPersesTests } from '../../support/perses/00.coo_bvt_perses.cy';
 import { guidedTour } from '../../views/tour';
 
 // Set constants for the operators that need to be installed for tests.
@@ -13,6 +12,7 @@ const MCP = {
     name: 'monitoring',
   },
 };
+
 const MP = {
   namespace: 'openshift-monitoring',
   operatorName: 'Cluster Monitoring Operator',
@@ -20,8 +20,7 @@ const MP = {
 
 const KBV = {
   namespace: 'openshift-cnv',
-  packageName: 'kubevirt-hyperconverged',
-  operatorName: 'kubevirt-hyperconverged-operator.v4.19.6',
+  packageName: 'kubevirt-hyperconverged', 
   config: {
     kind: 'HyperConverged',
     name: 'kubevirt-hyperconverged',
@@ -43,33 +42,32 @@ describe('Installation: COO and setting up Monitoring Plugin', () => {
   });
 });
 
-describe('IVT: Monitoring UIPlugin + Virtualization', () => {
+describe('Installation: Virtualization', () => {
 
   before(() => {
     cy.beforeBlockVirtualization(KBV);
   });
 
-  it('1. Virtualization perspective - Observe Menu', () => {
-    cy.log('Virtualization perspective - Observe Menu and verify all submenus');
+  it('1. Installation: Virtualization', () => {
+    cy.log('Installation: Virtualization');
     cy.switchPerspective('Virtualization');
     cy.byAriaLabel('Welcome modal').should('be.visible');
     guidedTour.closeKubevirtTour();
   });
 });
 
-describe('Regression: Monitoring - Metrics (Virtualization)', () => {
+describe('IVT: COO - Dashboards (Perses) - Virtualization perspective', () => {
 
   beforeEach(() => {
     cy.visit('/');
+    guidedTour.close();
     cy.validateLogin();
     cy.switchPerspective('Virtualization');
     guidedTour.closeKubevirtTour();
-    alerts.getWatchdogAlert();
-    nav.sidenav.clickNavLink(['Observe', 'Metrics']);
-    alerts.getWatchdogAlert();
+    nav.sidenav.clickNavLink(['Observe', 'Dashboards (Perses)']);
   });
 
-  runAllRegressionMetricsTests({
+  runBVTCOOPersesTests({
     name: 'Virtualization',
   });
 

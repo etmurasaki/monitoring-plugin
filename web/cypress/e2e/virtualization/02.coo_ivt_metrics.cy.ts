@@ -1,5 +1,5 @@
 import { alerts } from '../../fixtures/monitoring/alert';
-import { runAllRegressionAlertsTests } from '../../support/monitoring/01.reg_alerts.cy';
+import { runAllRegressionMetricsTests } from '../../support/monitoring/02.reg_metrics.cy';
 import { nav } from '../../views/nav';
 import { guidedTour } from '../../views/tour';
 
@@ -13,7 +13,6 @@ const MCP = {
     name: 'monitoring',
   },
 };
-
 const MP = {
   namespace: 'openshift-monitoring',
   operatorName: 'Cluster Monitoring Operator',
@@ -21,8 +20,7 @@ const MP = {
 
 const KBV = {
   namespace: 'openshift-cnv',
-  packageName: 'kubevirt-hyperconverged',
-  operatorName: 'kubevirt-hyperconverged-operator.v4.19.6',
+  packageName: 'kubevirt-hyperconverged', 
   config: {
     kind: 'HyperConverged',
     name: 'kubevirt-hyperconverged',
@@ -58,7 +56,7 @@ describe('IVT: Monitoring UIPlugin + Virtualization', () => {
   });
 });
 
-describe('Regression: Monitoring - Alerts (Virtualization)', () => {
+describe('Regression: Monitoring - Metrics (Virtualization)', () => {
 
   beforeEach(() => {
     cy.visit('/');
@@ -66,11 +64,11 @@ describe('Regression: Monitoring - Alerts (Virtualization)', () => {
     cy.switchPerspective('Virtualization');
     guidedTour.closeKubevirtTour();
     alerts.getWatchdogAlert();
-    nav.sidenav.clickNavLink(['Observe', 'Alerting']);
+    nav.sidenav.clickNavLink(['Observe', 'Metrics']);
     alerts.getWatchdogAlert();
   });
-  // Run tests in Virtualization perspective
-  runAllRegressionAlertsTests({
+
+  runAllRegressionMetricsTests({
     name: 'Virtualization',
   });
 

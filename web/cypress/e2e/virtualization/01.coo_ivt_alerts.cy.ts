@@ -1,7 +1,7 @@
-import { runBVTMonitoringTests } from '../../support/monitoring/00.bvt_monitoring.cy';
-import { guidedTour } from '../../views/tour';
 import { alerts } from '../../fixtures/monitoring/alert';
+import { runAllRegressionAlertsTests } from '../../support/monitoring/01.reg_alerts.cy';
 import { nav } from '../../views/nav';
+import { guidedTour } from '../../views/tour';
 
 // Set constants for the operators that need to be installed for tests.
 const MCP = {
@@ -21,8 +21,7 @@ const MP = {
 
 const KBV = {
   namespace: 'openshift-cnv',
-  packageName: 'kubevirt-hyperconverged',
-  operatorName: 'kubevirt-hyperconverged-operator.v4.19.6',
+  packageName: 'kubevirt-hyperconverged', 
   config: {
     kind: 'HyperConverged',
     name: 'kubevirt-hyperconverged',
@@ -37,7 +36,6 @@ describe('Installation: COO and setting up Monitoring Plugin', () => {
 
   before(() => {
     cy.beforeBlockCOO(MCP, MP);
-
   });
 
   it('1. Installation: COO and setting up Monitoring Plugin', () => {
@@ -45,7 +43,7 @@ describe('Installation: COO and setting up Monitoring Plugin', () => {
   });
 });
 
-describe('Installation: Virtualization', () => {
+describe('IVT: Monitoring UIPlugin + Virtualization', () => {
 
   before(() => {
     cy.beforeBlockVirtualization(KBV);
@@ -59,15 +57,10 @@ describe('Installation: Virtualization', () => {
   });
 });
 
-describe('IVT: Monitoring + Virtualization', () => {
-
-  before(() => {
-    cy.beforeBlock(MP);
-  });
+describe('Regression: Monitoring - Alerts (Virtualization)', () => {
 
   beforeEach(() => {
     cy.visit('/');
-    guidedTour.close();
     cy.validateLogin();
     cy.switchPerspective('Virtualization');
     guidedTour.closeKubevirtTour();
@@ -75,9 +68,8 @@ describe('IVT: Monitoring + Virtualization', () => {
     nav.sidenav.clickNavLink(['Observe', 'Alerting']);
     alerts.getWatchdogAlert();
   });
-
-  // Run tests in Administrator perspective
-  runBVTMonitoringTests({
+  // Run tests in Virtualization perspective
+  runAllRegressionAlertsTests({
     name: 'Virtualization',
   });
 

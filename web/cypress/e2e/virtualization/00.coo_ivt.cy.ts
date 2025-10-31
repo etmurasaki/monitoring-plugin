@@ -1,6 +1,7 @@
-import { nav } from '../../views/nav';
-import { runBVTCOOPersesTests } from '../../support/perses/00.coo_bvt_perses.cy';
+import { runBVTMonitoringTests } from '../../support/monitoring/00.bvt_monitoring.cy';
 import { guidedTour } from '../../views/tour';
+import { alerts } from '../../fixtures/monitoring/alert';
+import { nav } from '../../views/nav';
 
 // Set constants for the operators that need to be installed for tests.
 const MCP = {
@@ -20,8 +21,7 @@ const MP = {
 
 const KBV = {
   namespace: 'openshift-cnv',
-  packageName: 'kubevirt-hyperconverged',
-  operatorName: 'kubevirt-hyperconverged-operator.v4.19.6',
+  packageName: 'kubevirt-hyperconverged', 
   config: {
     kind: 'HyperConverged',
     name: 'kubevirt-hyperconverged',
@@ -36,6 +36,7 @@ describe('Installation: COO and setting up Monitoring Plugin', () => {
 
   before(() => {
     cy.beforeBlockCOO(MCP, MP);
+
   });
 
   it('1. Installation: COO and setting up Monitoring Plugin', () => {
@@ -49,15 +50,19 @@ describe('Installation: Virtualization', () => {
     cy.beforeBlockVirtualization(KBV);
   });
 
-  it('1. Installation: Virtualization', () => {
-    cy.log('Installation: Virtualization');
+  it('1. Virtualization perspective - Observe Menu', () => {
+    cy.log('Virtualization perspective - Observe Menu and verify all submenus');
     cy.switchPerspective('Virtualization');
     cy.byAriaLabel('Welcome modal').should('be.visible');
     guidedTour.closeKubevirtTour();
   });
 });
 
-describe('IVT: COO - Dashboards (Perses) - Virtualization perspective', () => {
+describe('IVT: Monitoring + Virtualization', () => {
+
+  before(() => {
+    cy.beforeBlock(MP);
+  });
 
   beforeEach(() => {
     cy.visit('/');
@@ -65,10 +70,13 @@ describe('IVT: COO - Dashboards (Perses) - Virtualization perspective', () => {
     cy.validateLogin();
     cy.switchPerspective('Virtualization');
     guidedTour.closeKubevirtTour();
-    nav.sidenav.clickNavLink(['Observe', 'Dashboards (Perses)']);
+    alerts.getWatchdogAlert();
+    nav.sidenav.clickNavLink(['Observe', 'Alerting']);
+    alerts.getWatchdogAlert();
   });
 
-  runBVTCOOPersesTests({
+  // Run tests in Administrator perspective
+  runBVTMonitoringTests({
     name: 'Virtualization',
   });
 

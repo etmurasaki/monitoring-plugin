@@ -1,4 +1,5 @@
-import { runAllRegressionLegacyDashboardsTests } from '../../support/monitoring/03.reg_legacy_dashboards.cy';
+import { alerts } from '../../fixtures/monitoring/alert';
+import { runAllRegressionAlertsTests } from '../../support/monitoring/01.reg_alerts.cy';
 import { nav } from '../../views/nav';
 import { guidedTour } from '../../views/tour';
 
@@ -11,7 +12,6 @@ const MP = {
 const KBV = {
   namespace: 'openshift-cnv',
   packageName: 'kubevirt-hyperconverged',
-  operatorName: 'kubevirt-hyperconverged-operator.v4.19.6',
   config: {
     kind: 'HyperConverged',
     name: 'kubevirt-hyperconverged',
@@ -47,19 +47,19 @@ describe('Installation: Virtualization', () => {
   });
 });
 
-describe('Regression: Monitoring - Legacy Dashboards (Virtualization)', () => {
+describe('Regression: Monitoring - Alerts (Virtualization)', () => {
 
   beforeEach(() => {
     cy.visit('/');
     cy.validateLogin();
     cy.switchPerspective('Virtualization');
     guidedTour.closeKubevirtTour();
-    nav.sidenav.clickNavLink(['Observe', 'Dashboards']);
+    alerts.getWatchdogAlert();
+    nav.sidenav.clickNavLink(['Observe', 'Alerting']);
+    alerts.getWatchdogAlert();
   });
-
-  runAllRegressionLegacyDashboardsTests({
+  // Run tests in Virtualization perspective
+  runAllRegressionAlertsTests({
     name: 'Virtualization',
   });
-
-
 });

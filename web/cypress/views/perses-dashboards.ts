@@ -94,9 +94,14 @@ export const persesDashboardsPage = {
     });
   },
 
-  expandCollapsePanel: (panel: keyof typeof persesDashboardsAcceleratorsCommonMetricsPanels | string) => {
+  expandPanel: (panel: keyof typeof persesDashboardsAcceleratorsCommonMetricsPanels | string) => {
     cy.log('persesDashboardsPage.expandPanel');
-    cy.byDataTestID(persesDataTestIDs.panelHeader).find('h6').contains(panel).scrollIntoView().parents('div.MuiCardHeader-content').siblings('div.MuiCardHeader-action').find('button').should('be.visible').click();
+    cy.byDataTestID(persesDataTestIDs.panelHeader).find('h6').contains(panel).scrollIntoView().siblings('div').eq(2).find('[data-testid="ArrowExpandIcon"]').click({force: true});
+  },
+
+  collapsePanel: (panel: keyof typeof persesDashboardsAcceleratorsCommonMetricsPanels | string) => {
+    cy.log('persesDashboardsPage.collapsePanel');
+    cy.byDataTestID(persesDataTestIDs.panelHeader).find('h6').contains(panel).scrollIntoView().siblings('div').eq(2).find('[data-testid="ArrowCollapseIcon"]').click({force: true});
   },
 
   statChartValueAssertion: (panel: keyof typeof persesDashboardsAcceleratorsCommonMetricsPanels | string, noData: boolean) => {

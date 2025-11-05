@@ -15,6 +15,7 @@ export interface PerspectiveConfig {
 
 export function runAllRegressionMetricsTests(perspective: PerspectiveConfig) {
   testMetricsRegression(perspective);
+  testMetricsRegression1(perspective);
 }
 export function testMetricsRegression(perspective: PerspectiveConfig) {
 
@@ -223,7 +224,7 @@ export function testMetricsRegression(perspective: PerspectiveConfig) {
     cy.byTestID(DataTestIDs.MetricsPageExpandCollapseRowButton).find('button').eq(1).should('have.attr', 'aria-expanded', 'true');
     cy.get(Classes.MetricsPageQueryInput).eq(0).should('contain', MetricsPageQueryInput.EXPRESSION_PRESS_SHIFT_ENTER_FOR_NEWLINES);
     cy.get(Classes.MetricsPageQueryInput).eq(1).should('contain', MetricsPageQueryInput.INSERT_EXAMPLE_QUERY);
- 
+
     cy.log('6.3 Preparation to test Run Queries button');
     cy.get(Classes.MetricsPageQueryInput).eq(0).should('be.visible').clear();
     cy.get(Classes.MetricsPageQueryInput).eq(0).type(MetricsPageQueryInput.VECTOR_QUERY);
@@ -238,7 +239,7 @@ export function testMetricsRegression(perspective: PerspectiveConfig) {
     metricsPage.disableEnableQuerySwitchAssertion(1, true);
     metricsPage.expandCollapseRowAssertion(true, 0, true, true);
     metricsPage.expandCollapseRowAssertion(true, 1, true, true);
-    
+
     cy.log('6.6 Kebab icon - Disable query');
     metricsPage.clickKebabDropdown(0);
     cy.byTestID(DataTestIDs.MetricsPageDisableEnableQueryDropdownItem).contains(MetricsPageQueryKebabDropdown.DISABLE_QUERY).should('be.visible').click();
@@ -288,7 +289,7 @@ export function testMetricsRegression(perspective: PerspectiveConfig) {
     cy.byTestID(DataTestIDs.MetricsPageNoQueryEnteredTitle).should('be.visible');
     cy.byTestID(DataTestIDs.MetricsPageNoQueryEntered).should('be.visible');
     cy.byTestID(DataTestIDs.MetricsPageInsertExampleQueryButton).should('be.visible');
-    
+
     cy.log('6.9 Switch - Enable query for both queries');
     metricsPage.clickDisableEnableQuerySwitch(0);
     metricsPage.clickDisableEnableQuerySwitch(1);
@@ -399,6 +400,10 @@ export function testMetricsRegression(perspective: PerspectiveConfig) {
 
   });
 
+}
+
+export function testMetricsRegression1(perspective: PerspectiveConfig) {
+
   it(`7. ${perspective.name} perspective - Metrics > Predefined Queries > Export as CSV`, () => {
     //OCPBUGS-54316 - [4.16] Metrics "Export as CSV" is not working for all queries 
     cy.log('7.1 Predefined Queries');
@@ -407,7 +412,7 @@ export function testMetricsRegression(perspective: PerspectiveConfig) {
     metricsPage.exportAsCSV(true, MetricsPageQueryInput.CPU_USAGE);
     metricsPage.clickActionsDeleteAllQueries();
 
-    cy.log('7.2 Predefined Queries'); 
+    cy.log('7.2 Predefined Queries');
     metricsPage.clickPredefinedQuery(MetricsPagePredefinedQueries.MEMORY_USAGE);
     metricsPage.clickKebabDropdown(0);
     metricsPage.exportAsCSV(true, MetricsPageQueryInput.MEMORY_USAGE);
@@ -465,11 +470,11 @@ export function testMetricsRegression(perspective: PerspectiveConfig) {
     metricsPage.clickPredefinedQuery(MetricsPagePredefinedQueries.RECEIVE_BANDWIDTH);
     metricsPage.clickPredefinedQuery(MetricsPagePredefinedQueries.TRANSMIT_BANDWIDTH);
     metricsPage.clickPredefinedQuery(MetricsPagePredefinedQueries.RATE_OF_RECEIVED_PACKETS);
-    cy.bySemanticElement('h1').scrollIntoView().should('be.visible');
-    
+    cy.bySemanticElement('h1', 'Metrics').scrollIntoView().should('be.visible');
+
     cy.get(Classes.MetricsPageUngraphableResults).contains(MetricGraphEmptyState.UNGRAPHABLE_RESULTS).should('be.visible');
     cy.get(Classes.MetricsPageUngraphableResultsDescription).contains(MetricGraphEmptyState.UNGRAPHABLE_RESULTS_DESCRIPTION).should('be.visible');
-    
+
   });
 
   it(`9. ${perspective.name} perspective - Metrics > No Datapoints`, () => {
@@ -483,7 +488,7 @@ export function testMetricsRegression(perspective: PerspectiveConfig) {
     metricsPage.enterQueryInput(0, 'a');
     cy.get(Classes.MetricsPageQueryAutocomplete).should('be.visible');
     cy.get(Classes.MetricsPageQueryAutocomplete).should('contain', 'abs');
-    
+
   });
 
   it(`10. ${perspective.name} perspective - Metrics > No Datapoints with alert`, () => {
@@ -492,6 +497,5 @@ export function testMetricsRegression(perspective: PerspectiveConfig) {
     metricsPage.clickRunQueriesButton();
     cy.byOUIAID(DataTestIDs.MetricsGraphAlertDanger).should('be.visible');
   });
-   
 }
 

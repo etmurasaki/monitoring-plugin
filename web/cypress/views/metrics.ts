@@ -264,6 +264,7 @@ export const metricsPage = {
     cy.log('metricsPage.clickActionsDeleteAllQueries');
     metricsPage.clickActions();
     cy.byTestID(DataTestIDs.MetricsPageDeleteAllQueriesDropdownItem).click();
+    cy.wait(1000);
   },
 
   deleteAllQueriesAssertion: () => {

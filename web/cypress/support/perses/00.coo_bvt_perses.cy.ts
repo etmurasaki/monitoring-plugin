@@ -34,8 +34,8 @@ export function testBVTCOOPerses(perspective: PerspectiveConfig) {
     cy.byDataTestID(persesDataTestIDs.variableDropdown+'-cluster').should('be.visible');
     persesDashboardsPage.panelGroupHeaderAssertion('Accelerators');
     persesDashboardsPage.panelHeadersAcceleratorsCommonMetricsAssertion();
-    persesDashboardsPage.expandCollapsePanel(persesDashboardsAcceleratorsCommonMetricsPanels.GPU_UTILIZATION);
-    persesDashboardsPage.expandCollapsePanel(persesDashboardsAcceleratorsCommonMetricsPanels.GPU_UTILIZATION);
+    persesDashboardsPage.expandPanel(persesDashboardsAcceleratorsCommonMetricsPanels.GPU_UTILIZATION);
+    persesDashboardsPage.collapsePanel(persesDashboardsAcceleratorsCommonMetricsPanels.GPU_UTILIZATION);
   });
 
   it(`3.${perspective.name} perspective - Perses Dashboard Sample dashboard`, () => {
@@ -47,8 +47,8 @@ export function testBVTCOOPerses(perspective: PerspectiveConfig) {
     cy.byDataTestID(persesDataTestIDs.variableDropdown+'-interval').should('be.visible');
     cy.byDataTestID(persesDataTestIDs.variableDropdown+'-text').should('be.visible');
     persesDashboardsPage.panelGroupHeaderAssertion('Row 1');
-    persesDashboardsPage.expandCollapsePanel('RAM Used');
-    persesDashboardsPage.expandCollapsePanel('RAM Used');
+    persesDashboardsPage.expandPanel('RAM Used');
+    persesDashboardsPage.collapsePanel('RAM Used');
     persesDashboardsPage.statChartValueAssertion('RAM Used', true);
     persesDashboardsPage.searchAndSelectVariable('job', 'node-exporter');
     persesDashboardsPage.statChartValueAssertion('RAM Used', false);

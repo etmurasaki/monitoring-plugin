@@ -24,8 +24,6 @@ export function testBVTMonitoring(perspective: PerspectiveConfig) {
 
   it(`5. ${perspective.name} perspective - Alerting > Alerting Details page > Alerting Rule > Metrics`, () => {
     cy.log('5.1. use sidebar nav to go to Observe > Alerting');
-    nav.sidenav.clickNavLink(['Observe', 'Alerting']);
-    commonPages.titleShouldHaveText('Alerting');
     listPage.tabShouldHaveText('Alerts');
     listPage.tabShouldHaveText('Silences');
     listPage.tabShouldHaveText('Alerting rules');
@@ -34,6 +32,7 @@ export function testBVTMonitoring(perspective: PerspectiveConfig) {
     listPage.ARRows.shouldBeLoaded();
 
     cy.log('5.2. filter Alerts and click on Alert');
+    cy.wait(2000);
     listPage.filter.byName(`${WatchdogAlert.ALERTNAME}`);
     listPage.ARRows.countShouldBe(1);
     listPage.ARRows.ARShouldBe(`${WatchdogAlert.ALERTNAME}`, `${WatchdogAlert.SEVERITY}`, 1, 'Firing');
@@ -83,10 +82,7 @@ export function testBVTMonitoring(perspective: PerspectiveConfig) {
   });
 
   it(`6. ${perspective.name} perspective - Creates and expires a Silence`, () => {
-    cy.log('6.1 use sidebar nav to go to Observe > Alerting');
-    nav.sidenav.clickNavLink(['Observe', 'Alerting']);
-    alerts.getWatchdogAlert();
-
+  
     cy.log('6.3 filter to Watchdog alert');
     nav.tabs.switchTab('Alerts');
     listPage.ARRows.shouldBeLoaded();

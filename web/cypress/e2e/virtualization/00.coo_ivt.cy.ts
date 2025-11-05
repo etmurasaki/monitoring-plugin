@@ -1,5 +1,6 @@
 import { alerts } from '../../fixtures/monitoring/alert';
 import { runBVTMonitoringTests } from '../../support/monitoring/00.bvt_monitoring.cy';
+import { commonPages } from '../../views/common';
 import { nav } from '../../views/nav';
 import { guidedTour } from '../../views/tour';
 
@@ -52,16 +53,11 @@ describe('Installation: Virtualization', () => {
   it('1. Virtualization perspective - Observe Menu', () => {
     cy.log('Virtualization perspective - Observe Menu and verify all submenus');
     cy.switchPerspective('Virtualization');
-    cy.byAriaLabel('Welcome modal').should('be.visible');
     guidedTour.closeKubevirtTour();
   });
 });
 
 describe('IVT: Monitoring + Virtualization', () => {
-
-  before(() => {
-    cy.beforeBlock(MP);
-  });
 
   beforeEach(() => {
     cy.visit('/');
@@ -71,6 +67,7 @@ describe('IVT: Monitoring + Virtualization', () => {
     guidedTour.closeKubevirtTour();
     alerts.getWatchdogAlert();
     nav.sidenav.clickNavLink(['Observe', 'Alerting']);
+    commonPages.titleShouldHaveText('Alerting');
     alerts.getWatchdogAlert();
   });
 

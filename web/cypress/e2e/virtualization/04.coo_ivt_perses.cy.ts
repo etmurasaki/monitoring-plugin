@@ -1,6 +1,7 @@
 import { nav } from '../../views/nav';
 import { runBVTCOOPersesTests } from '../../support/perses/00.coo_bvt_perses.cy';
 import { guidedTour } from '../../views/tour';
+import { commonPages } from '../../views/common';
 
 // Set constants for the operators that need to be installed for tests.
 const MCP = {
@@ -65,6 +66,7 @@ describe('IVT: COO - Dashboards (Perses) - Virtualization perspective', () => {
     cy.switchPerspective('Virtualization');
     guidedTour.closeKubevirtTour();
     nav.sidenav.clickNavLink(['Observe', 'Dashboards (Perses)']);
+    commonPages.titleShouldHaveText('Dashboards');
   });
 
   runBVTCOOPersesTests({

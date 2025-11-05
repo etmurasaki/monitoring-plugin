@@ -1,4 +1,5 @@
 import { runAllRegressionLegacyDashboardsTests } from '../../support/monitoring/03.reg_legacy_dashboards.cy';
+import { commonPages } from '../../views/common';
 import { nav } from '../../views/nav';
 import { guidedTour } from '../../views/tour';
 
@@ -64,6 +65,7 @@ describe('Regression: Monitoring - Legacy Dashboards (Virtualization)', () => {
     cy.switchPerspective('Virtualization');
     guidedTour.closeKubevirtTour();
     nav.sidenav.clickNavLink(['Observe', 'Dashboards']);
+    commonPages.titleShouldHaveText('Dashboards');
   });
 
   runAllRegressionLegacyDashboardsTests({

@@ -247,16 +247,29 @@ const operatorUtils = {
 
   waitForCOOReady(MCP: { namespace: string }): void {
     cy.log('Check Cluster Observability Operator status');
-    cy.exec(
-      `sleep 15 && oc wait --for=condition=Ready pods --selector=app.kubernetes.io/name=observability-operator -n ${MCP.namespace} --timeout=60s --kubeconfig ${Cypress.env('KUBECONFIG_PATH')}`,
-      {
-        timeout: readyTimeoutMilliseconds,
-        failOnNonZeroExit: true
-      }
-    ).then((result) => {
-      expect(result.code).to.eq(0);
-      cy.log(`Observability-operator pod is now running in namespace: ${MCP.namespace}`);
-    });
+
+    cy.exec(`sleep 60 && oc get pods -n openshift-cluster-observability-operator | grep observability-operator | awk '{print $1}'`, { timeout: readyTimeoutMilliseconds })
+      .its('stdout') // Get the captured output string
+      .then((podName) => {
+        // Trim any extra whitespace (newline, etc.)
+        const COO_POD_NAME = podName.trim();
+
+        cy.log(`Successfully retrieved Pod Name: ${COO_POD_NAME}`);
+
+        // Now, run your actual oc wait command using the captured variable
+        cy.exec(
+          `sleep 15 && oc wait --for=condition=Ready pods ${COO_POD_NAME} -n ${MCP.namespace} --timeout=60s --kubeconfig ${Cypress.env('KUBECONFIG_PATH')}`,
+          {
+            timeout: readyTimeoutMilliseconds,
+            failOnNonZeroExit: true
+          }
+        ).then((result) => {
+          expect(result.code).to.eq(0);
+          cy.log(`Observability-operator pod is now running in namespace: ${MCP.namespace}`);
+        });
+      });
+    
+   
 
     cy.get('#page-sidebar').then(($sidebar) => {
       const section = $sidebar.text().includes('Ecosystem') ? 'Ecosystem' : 'Operators';
@@ -494,9 +507,9 @@ Cypress.Commands.add('beforeBlock', (MP: { namespace: string, operatorName: stri
   
   Cypress.Commands.add('cleanupMP', (MP: { namespace: string, operatorName: string }) => {
     if (useSession) {
-      cy.log('cleanupMP (session)');
+      cy.log('cleanupMP');
       operatorUtils.revertMonitoringPluginImage(MP);
-      cy.log('cleanupMP (no session) completed');
+      cy.log('cleanupMP completed');
     }
   });
   
@@ -538,14 +551,14 @@ Cypress.Commands.add('beforeBlock', (MP: { namespace: string, operatorName: stri
   });
   
   Cypress.Commands.add('cleanupCOO', (MCP: { namespace: string, operatorName: string, packageName: string }, MP: { namespace: string, operatorName: string }) => {
-    cy.log('Cleanup COO (no session)');
+    cy.log('Cleanup COO');
     if (Cypress.env('SKIP_ALL_INSTALL')) {
       cy.log('SKIP_ALL_INSTALL is set. Skipping COO cleanup and operator verifications (preserves existing setup).');
       return;
     }
     operatorUtils.cleanup(MCP);
     operatorUtils.revertMonitoringPluginImage(MP);
-    cy.log('Cleanup COO (no session) completed');
+    cy.log('Cleanup COO completed');
   });
 
   Cypress.Commands.add('setupCOO', (MCP: { namespace: string, operatorName: string, packageName: string }, MP: { namespace: string, operatorName: string }) => {

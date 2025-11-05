@@ -1,5 +1,6 @@
 import { alerts } from '../../fixtures/monitoring/alert';
 import { runAllRegressionAlertsTests } from '../../support/monitoring/01.reg_alerts.cy';
+import { commonPages } from '../../views/common';
 import { nav } from '../../views/nav';
 import { guidedTour } from '../../views/tour';
 
@@ -66,6 +67,7 @@ describe('Regression: Monitoring - Alerts (Virtualization)', () => {
     guidedTour.closeKubevirtTour();
     alerts.getWatchdogAlert();
     nav.sidenav.clickNavLink(['Observe', 'Alerting']);
+    commonPages.titleShouldHaveText('Alerting');
     alerts.getWatchdogAlert();
   });
   // Run tests in Virtualization perspective

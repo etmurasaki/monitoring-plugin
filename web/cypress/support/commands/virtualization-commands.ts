@@ -243,7 +243,7 @@ Cypress.Commands.add('beforeBlockVirtualization', (KBV: { namespace: string, pac
 });
 
 Cypress.Commands.add('cleanupKBV', (KBV: { namespace: string, packageName: string }) => {
-  cy.log('Cleanup Virtualization (no session)');
+  cy.log('Cleanup Virtualization');
   virtualizationUtils.cleanup(KBV);
-  cy.log('Cleanup Virtualization (no session) completed');
+  cy.log('Cleanup Virtualization completed');
 });

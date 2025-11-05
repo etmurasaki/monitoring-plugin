@@ -124,7 +124,7 @@ export const listPage = {
       if (open) {
         listPage.filter.clickFilter(open, false);
       };
-      cy.get(Classes.FilterDropdownOption).contains(option).should('be.visible').click();
+      cy.get(Classes.FilterDropdownOption).contains(option).should('be.visible').click({force: true});
       if (close) {
         listPage.filter.clickFilter(false, close);
       };

@@ -45,16 +45,28 @@ spec:
       interval: 1m0s
 EOF
 
+# oc apply -f - <<EOF
+# apiVersion: config.openshift.io/v1
+# kind: ImageDigestMirrorSet
+# metadata:
+#   name: idms-coo
+# spec:
+#   imageDigestMirrors:
+#   - mirrors:
+#     - registry.stage.redhat.io
+#     source: registry.redhat.io
+# EOF
+
 oc apply -f - <<EOF
 apiVersion: config.openshift.io/v1
 kind: ImageDigestMirrorSet
 metadata:
-  name: idms-coo
+ name: idms-coo
 spec:
-  imageDigestMirrors:
-  - mirrors:
-    - registry.stage.redhat.io
-    source: registry.redhat.io
+ imageDigestMirrors:
+ - mirrors:
+   - quay.io/redhat-user-workloads/cluster-observabilit-tenant/cluster-observability-operator
+   source: registry.redhat.io/cluster-observability-operator
 EOF
 
 oc apply -f - <<EOF

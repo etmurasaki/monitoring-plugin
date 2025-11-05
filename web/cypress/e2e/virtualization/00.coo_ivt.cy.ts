@@ -60,10 +60,6 @@ describe('Installation: Virtualization', () => {
 
 describe('IVT: Monitoring + Virtualization', () => {
 
-  before(() => {
-    cy.beforeBlock(MP);
-  });
-
   beforeEach(() => {
     cy.visit('/');
     guidedTour.close();

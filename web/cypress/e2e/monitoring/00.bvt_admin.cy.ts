@@ -22,6 +22,7 @@ describe('BVT: Monitoring - Administrator perspective', () => {
     cy.validateLogin();
     alerts.getWatchdogAlert();
     nav.sidenav.clickNavLink(['Observe', 'Alerting']);
+    commonPages.titleShouldHaveText('Alerting');
     alerts.getWatchdogAlert();
   });
 

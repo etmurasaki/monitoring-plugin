@@ -1,6 +1,7 @@
 import { runAllRegressionLegacyDashboardsTests } from '../../../support/monitoring/03.reg_legacy_dashboards.cy';
 import { nav } from '../../../views/nav';
 import { guidedTour } from '../../../views/tour';
+import { commonPages } from '../../../views/common';
 
 const MP = {
   namespace: 'openshift-monitoring',
@@ -18,6 +19,7 @@ describe('Regression: Monitoring - Dashboards (Administrator)', () => {
     guidedTour.close();
     cy.validateLogin();
     nav.sidenav.clickNavLink(['Observe', 'Dashboards']);
+    commonPages.titleShouldHaveText('Dashboards');
   });
 
   runAllRegressionLegacyDashboardsTests({

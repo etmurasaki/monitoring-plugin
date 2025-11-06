@@ -8,7 +8,9 @@ export const nav = {
     switcher: {
       changePerspectiveTo: (perspective: string) => {
       cy.log('Switch perspective - ' + `${perspective}`);
+      cy.byLegacyTestID('perspective-switcher-toggle').scrollIntoView().should('be.visible');
       cy.byLegacyTestID('perspective-switcher-toggle').scrollIntoView().should('be.visible').click();
+      cy.byLegacyTestID('perspective-switcher-menu-option').contains(perspective).should('be.visible');
       cy.byLegacyTestID('perspective-switcher-menu-option').contains(perspective).should('be.visible').click();
       },
       shouldHaveText: (perspective: string) => {

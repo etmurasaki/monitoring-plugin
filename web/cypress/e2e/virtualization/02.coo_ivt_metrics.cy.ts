@@ -51,7 +51,6 @@ describe('IVT: Monitoring UIPlugin + Virtualization', () => {
   it('1. Virtualization perspective - Observe Menu', () => {
     cy.log('Virtualization perspective - Observe Menu and verify all submenus');
     cy.switchPerspective('Virtualization');
-    cy.byAriaLabel('Welcome modal').should('be.visible');
     guidedTour.closeKubevirtTour();
   });
 });

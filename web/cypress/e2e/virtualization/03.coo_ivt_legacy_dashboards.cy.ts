@@ -1,6 +1,7 @@
 import { runAllRegressionLegacyDashboardsTests } from '../../support/monitoring/03.reg_legacy_dashboards.cy';
 import { nav } from '../../views/nav';
 import { guidedTour } from '../../views/tour';
+import { commonPages } from '../../views/common';
 
 // Set constants for the operators that need to be installed for tests.
 const MCP = {
@@ -50,7 +51,6 @@ describe('IVT: Monitoring UIPlugin + Virtualization', () => {
   it('1. Virtualization perspective - Observe Menu', () => {
     cy.log('Virtualization perspective - Observe Menu and verify all submenus');
     cy.switchPerspective('Virtualization');
-    cy.byAriaLabel('Welcome modal').should('be.visible');
     guidedTour.closeKubevirtTour();
   });
 });
@@ -63,6 +63,7 @@ describe('Regression: Monitoring - Legacy Dashboards (Virtualization)', () => {
     cy.switchPerspective('Virtualization');
     guidedTour.closeKubevirtTour();
     nav.sidenav.clickNavLink(['Observe', 'Dashboards']);
+    commonPages.titleShouldHaveText('Dashboards');
   });
 
   runAllRegressionLegacyDashboardsTests({

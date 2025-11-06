@@ -103,6 +103,7 @@ export const listPage = {
      */
     clickFilter: (toOpen: boolean, toClose: boolean) => {
       cy.log('listPage.filter.clickFilter');
+      cy.wait(1000);
       if (toOpen) {
         cy.get(Classes.FilterDropdown).contains('Filter').scrollIntoView().should('be.visible').click();
       }
@@ -122,6 +123,7 @@ export const listPage = {
       if (open) {
         listPage.filter.clickFilter(open, false);
       };
+      cy.wait(1000);
       cy.get(Classes.FilterDropdownOption).contains(option).should('be.visible').click();
       if (close) {
         listPage.filter.clickFilter(false, close);

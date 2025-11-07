@@ -211,6 +211,8 @@ export const persesAriaLabels = {
   TimeRangeDropdown: 'Select time range. Currently set to [object Object]',
   RefreshButton: 'Refresh',
   RefreshIntervalDropdown: 'Select refresh interval. Currently set to 0s',
+  ZoomInButton: 'Zoom in',
+  ZoomOutButton: 'Zoom out',
 };
 
 export const persesDataTestIDs = {

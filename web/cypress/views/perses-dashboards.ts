@@ -8,6 +8,8 @@ export const persesDashboardsPage = {
     cy.log('persesDashboardsPage.shouldBeLoaded');
     commonPages.titleShouldHaveText(MonitoringPageTitles.DASHBOARDS);
     cy.byAriaLabel(persesAriaLabels.TimeRangeDropdown).contains(persesDashboardsTimeRange.LAST_30_MINUTES).should('be.visible');
+    cy.byAriaLabel(persesAriaLabels.ZoomInButton).should('be.visible');
+    cy.byAriaLabel(persesAriaLabels.ZoomOutButton).should('be.visible');
     cy.byAriaLabel(persesAriaLabels.RefreshButton).should('be.visible');
     cy.byAriaLabel(persesAriaLabels.RefreshIntervalDropdown).contains(persesDashboardsRefreshInterval.OFF).should('be.visible');
     cy.byTestID(DataTestIDs.PersesDashboardDropdown).find('input').should('be.visible');

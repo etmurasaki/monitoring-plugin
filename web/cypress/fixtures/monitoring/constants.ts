@@ -284,8 +284,8 @@ export enum persesDashboardsAcceleratorsCommonMetricsPanels {
   GPU_UTILIZATION = 'GPU Utilization',
   MEMORY_USED_BYTES = 'Memory Used Bytes',
   MEMORY_TOTAL_BYTES = 'Memory Total Bytes',
-  POWER_USAGE_WATTS = 'Power Usage (watts)',
-  TEMPERATURE_CELCIUS = 'Temperature (celcius)',
-  SM_CLOCK_HERTZ = 'SM Clock(hertz)',
-  MEMORY_CLOCK_HERTZ = 'Memory Clock(hertz)',
+  POWER_USAGE_WATTS = 'Power Usage (Watts)',
+  TEMPERATURE_CELCIUS = 'Temperature (Celsius)',
+  SM_CLOCK_HERTZ = 'SM Clock (Hertz)',
+  MEMORY_CLOCK_HERTZ = 'Memory Clock (Hertz)',
 }

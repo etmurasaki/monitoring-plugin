@@ -439,7 +439,7 @@ const operatorUtils = {
     // Additional cleanup only when COO is installed
     if (!Cypress.env('SKIP_COO_INSTALL')) {
       cy.log('Remove Cluster Observability Operator namespace');
-      cy.exec(`./cypress/fixtures/coo/force_delete_ns.sh ${MCP.namespace} --kubeconfig ${Cypress.env('KUBECONFIG_PATH')}`);
+      cy.executeAndDelete(`./cypress/fixtures/coo/force_delete_ns.sh ${MCP.namespace} --kubeconfig ${Cypress.env('KUBECONFIG_PATH')}`);
     }
   },
 

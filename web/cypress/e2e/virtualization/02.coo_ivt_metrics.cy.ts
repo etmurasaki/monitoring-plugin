@@ -1,5 +1,6 @@
 import { alerts } from '../../fixtures/monitoring/alert';
 import { runAllRegressionMetricsTests } from '../../support/monitoring/02.reg_metrics.cy';
+import { commonPages } from '../../views/common';
 import { nav } from '../../views/nav';
 import { guidedTour } from '../../views/tour';
 
@@ -64,6 +65,7 @@ describe('Regression: Monitoring - Metrics (Virtualization)', () => {
     guidedTour.closeKubevirtTour();
     alerts.getWatchdogAlert();
     nav.sidenav.clickNavLink(['Observe', 'Metrics']);
+    commonPages.titleShouldHaveText('Metrics');
     alerts.getWatchdogAlert();
   });
 

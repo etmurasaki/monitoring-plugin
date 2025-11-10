@@ -361,7 +361,7 @@ export const metricsPage = {
 
   clickPredefinedQuery: (query: MetricsPagePredefinedQueries) => {
     cy.log('metricsPage.clickPredefinedQuery');
-    cy.byTestID(DataTestIDs.TypeaheadSelectInput).should('be.visible').click();
+    cy.byTestID(DataTestIDs.TypeaheadSelectInput).scrollIntoView().should('be.visible').click();
     cy.get(Classes.MetricsPagePredefinedQueriesMenuItem).contains(query).should('be.visible').click();
   },
 

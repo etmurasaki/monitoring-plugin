@@ -251,7 +251,11 @@ const DashboardsTable: React.FunctionComponent<DashboardsTableProps> = ({
         />
       ) : (
         <EmptyState variant={EmptyStateVariant.sm}>
-          <Title headingLevel="h4" size="lg" data-test={listPersesDashboardsDataTestIDs.EmptyStateTitle}>
+          <Title
+            headingLevel="h4"
+            size="lg"
+            data-test={listPersesDashboardsDataTestIDs.EmptyStateTitle}
+          >
             {hasFiltersApplied ? t('No results found') : t('No dashboards found')}
           </Title>
           <EmptyStateBody data-test={listPersesDashboardsDataTestIDs.EmptyStateBody}>
@@ -261,9 +265,9 @@ const DashboardsTable: React.FunctionComponent<DashboardsTableProps> = ({
           </EmptyStateBody>
           {hasFiltersApplied && (
             <Button
-            onClick={clearAllFilters}
-            className="pf-c-button pf-m-link"
-            data-test={listPersesDashboardsDataTestIDs.ClearAllFiltersButton}
+              onClick={clearAllFilters}
+              className="pf-c-button pf-m-link"
+              data-test={listPersesDashboardsDataTestIDs.ClearAllFiltersButton}
             >
               {t('Clear all filters')}
             </Button>

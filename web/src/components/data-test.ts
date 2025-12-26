@@ -203,3 +203,32 @@ export const Classes = {
   SilenceLabelRow: '.pf-v6-l-grid.pf-m-all-12-col-on-sm.pf-m-all-4-col-on-md.pf-m-gutter, .row',
   SilenceState: '.pf-v6-l-stack__item, .co-break-word',
 };
+
+export const persesAriaLabels = {
+  TimeRangeDropdown: 'Select time range. Currently set to [object Object]',
+  RefreshButton: 'Refresh',
+  RefreshIntervalDropdown: 'Select refresh interval. Currently set to 0s',
+  ZoomInButton: 'Zoom in',
+  ZoomOutButton: 'Zoom out',
+};
+
+export const persesDataTestIDs = {
+  variableDropdown: 'variable',
+  panelGroupHeader: 'panel-group-header',
+  panelHeader: 'panel',
+};
+
+export const listPersesDashboardsDataTestIDs = {
+  NameFilter: 'name-filter',
+  ProjectFilter: 'project-filter',
+  EmptyStateTitle: 'empty-state-title',
+  EmptyStateBody: 'empty-state-body',
+  ClearAllFiltersButton: 'clear-all-filters-button',
+  DashboardLinkPrefix: 'perseslistpage-',
+};
+
+export const listPersesDashboardsOUIAIDs = {
+  PageHeaderSubtitle: 'PageHeader-subtitle',
+  PersesBreadcrumb: 'perses-dashboards-breadcrumb',
+  PersesDashListDataViewTable: 'PersesDashList-DataViewTable',
+};

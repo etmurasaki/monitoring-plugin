@@ -212,13 +212,28 @@ export const persesAriaLabels = {
   ZoomOutButton: 'Zoom out',
 };
 
-export const persesDataTestIDs = {
+//data-testid
+export const persesMUIDataTestIDs = {
   variableDropdown: 'variable',
   panelGroupHeader: 'panel-group-header',
   panelHeader: 'panel',
 };
 
+export const persesDashboardDataTestIDs = {
+  editDashboardButtonToolbar: 'edit-dashboard-button-toolbar',
+  downloadButtonToolbar: 'download-button-toolbar',
+  editJsonButtonToolbar: 'edit-json-button-toolbar',
+  editVariablesButtonToolbar: 'edit-variables-button-toolbar',
+  editDatasourcesButtonToolbar: 'edit-datasources-button-toolbar',
+  addPanelButtonToolbar: 'add-panel-button-toolbar',
+  addGroupButtonToolbar: 'add-group-button-toolbar',
+  saveDashboardButtonToolbar: 'save-dashboard-button-toolbar',
+  cancelButtonToolbar: 'cancel-button-toolbar',
+};
+
 export const listPersesDashboardsDataTestIDs = {
+  PersesBreadcrumbDashboardItem: 'perses-dashboards-breadcrumb-dashboard-item',
+  PersesBreadcrumbDashboardNameItem: 'perses-dashboards-breadcrumb-dashboard-name-item',
   NameFilter: 'name-filter',
   ProjectFilter: 'project-filter',
   EmptyStateTitle: 'empty-state-title',

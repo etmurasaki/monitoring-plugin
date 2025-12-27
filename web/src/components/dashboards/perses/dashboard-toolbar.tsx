@@ -20,6 +20,8 @@ import { useDashboardsData } from './hooks/useDashboardsData';
 import { useAccessReview } from '@openshift-console/dynamic-plugin-sdk';
 import { useTranslation } from 'react-i18next';
 
+import { persesDashboardDataTestIDs } from '../../data-test';
+
 export interface DashboardToolbarProps {
   dashboardName: string;
   dashboardTitleComponent?: ReactNode;
@@ -72,6 +74,7 @@ export const EditButton = ({ onClick }: EditButtonProps): ReactElement => {
       color="secondary"
       disabled={disabled || loading}
       sx={{ whiteSpace: 'nowrap', minWidth: 'auto' }}
+      data-test={persesDashboardDataTestIDs.editDashboardButtonToolbar}
     >
       {loading ? t('Loading...') : t('Edit')}
     </Button>
@@ -193,13 +196,13 @@ export const OCPDashboardToolbar = (props: DashboardToolbarProps): ReactElement 
                 </Alert>
               )}
               <Stack direction="row" spacing={0.5} ml={1} whiteSpace="nowrap">
-                {isVariableEnabled && <EditVariablesButton />}
-                {isDatasourceEnabled && <EditDatasourcesButton />}
-                <AddPanelButton />
-                <AddGroupButton />
+                {isVariableEnabled && <EditVariablesButton data-test={persesDashboardDataTestIDs.editVariablesButtonToolbar} />}
+                {isDatasourceEnabled && <EditDatasourcesButton data-test={persesDashboardDataTestIDs.editDatasourcesButtonToolbar} />}
+                <AddPanelButton data-test={persesDashboardDataTestIDs.addPanelButtonToolbar} />
+                <AddGroupButton data-test={persesDashboardDataTestIDs.addGroupButtonToolbar} />
               </Stack>
-              <SaveDashboardButton onSave={onSave} isDisabled={isReadonly} />
-              <Button variant="outlined" onClick={onCancelButtonClick}>
+              <SaveDashboardButton onSave={onSave} isDisabled={isReadonly} data-test={persesDashboardDataTestIDs.saveDashboardButtonToolbar} />
+              <Button variant="outlined" onClick={onCancelButtonClick} data-test={persesDashboardDataTestIDs.cancelButtonToolbar}>
                 Cancel
               </Button>
             </Stack>
@@ -237,8 +240,8 @@ export const OCPDashboardToolbar = (props: DashboardToolbarProps): ReactElement 
           <Stack direction="row" ml="auto" flexWrap="wrap" justifyContent="end">
             <Stack direction="row" spacing={1} mt={1} ml={1}>
               <TimeRangeControls />
-              <DownloadButton />
-              <EditJsonButton isReadonly={!isEditMode} />
+              <DownloadButton data-test={persesDashboardDataTestIDs.downloadButtonToolbar} />
+              <EditJsonButton isReadonly={!isEditMode} data-test={persesDashboardDataTestIDs.editJsonButtonToolbar} />
             </Stack>
           </Stack>
         </Box>

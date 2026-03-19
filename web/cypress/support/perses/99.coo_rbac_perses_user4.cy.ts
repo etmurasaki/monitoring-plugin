@@ -1,4 +1,3 @@
-import { persesImportDashboardsPage } from '../../views/perses-dashboards-import-dashboard';
 import { listPersesDashboardsPage } from '../../views/perses-dashboards-list-dashboards';
 
 export interface PerspectiveConfig {

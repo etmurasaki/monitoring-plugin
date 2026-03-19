@@ -4,7 +4,6 @@ import { commonPages } from '../../views/common';
 import { listPersesDashboardsPage } from "../../views/perses-dashboards-list-dashboards";
 import { persesDashboardsPage } from '../../views/perses-dashboards';
 import { persesDashboardsPanelGroup } from '../../views/perses-dashboards-panelgroup';
-import { persesDashboardsEditDatasources } from '../../views/perses-dashboards-edit-datasources';
 import { persesDashboardsEditVariables } from '../../views/perses-dashboards-edit-variables';
 
 export interface PerspectiveConfig {

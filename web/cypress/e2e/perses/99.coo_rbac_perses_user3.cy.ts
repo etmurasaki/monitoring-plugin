@@ -19,7 +19,7 @@ const MP = {
 };
 
 //TODO: change tag to @smoke, @dashboards, @perses when customizable-dashboards gets merged
-describe('RBAC User3: COO - Dashboards (Perses) - Administrator perspective', { tags: ['@smoke-', '@dashboards-', '@perses-dev'] }, () => {
+describe('RBAC User3: COO - Dashboards (Perses) - Administrator perspective', { tags: ['@perses','@perses-dev'] }, () => {
 
   before(() => {
     //TODO: https://issues.redhat.com/browse/OCPBUGS-58468 - when it gets fixed, installation can be don using non-admin user

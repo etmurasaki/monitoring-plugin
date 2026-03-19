@@ -48,6 +48,7 @@ export function testCOOImportPerses(perspective: PerspectiveConfig) {
 
     cy.log(`1.10 Assert failed to migrate Grafana dashboard`);
     persesImportDashboardsPage.assertFailedToMigrateGrafanaDashboard();
+    persesDashboardsPage.closeAlert();
     
     cy.log(`1.11 Cancel import`);
     persesImportDashboardsPage.clickCancelButton();
@@ -71,7 +72,6 @@ export function testCOOImportPerses(perspective: PerspectiveConfig) {
 
     cy.log(`2.5 Import dashboard`);
     persesImportDashboardsPage.clickImportFileButton();
-    persesDashboardsPage.closeSuccessAlert();
 
     cy.log(`2.6 Assert dashboard is imported`);
     persesDashboardsPage.shouldBeLoadedEditionMode('Service Level dashboards / Virtual Machines by Time in Status');
@@ -94,6 +94,7 @@ export function testCOOImportPerses(perspective: PerspectiveConfig) {
     persesImportDashboardsPage.clickImportFileButton();
     persesImportDashboardsPage.assertDuplicatedDashboardError();
     persesImportDashboardsPage.clickCancelButton();
+    persesDashboardsPage.closeAlert();
 
   });
 
@@ -114,7 +115,7 @@ export function testCOOImportPerses(perspective: PerspectiveConfig) {
 
     cy.log(`3.5 Import dashboard`);
     persesImportDashboardsPage.clickImportFileButton();
-    persesDashboardsPage.closeSuccessAlert();
+    persesDashboardsPage.closeAlert();
 
     cy.log(`3.6 Assert dashboard is imported`);
     persesDashboardsPage.shouldBeLoadedEditionMode('Testing Perses dashboard - JSON');
@@ -157,7 +158,7 @@ export function testCOOImportPerses(perspective: PerspectiveConfig) {
 
     cy.log(`4.5 Import dashboard`);
     persesImportDashboardsPage.clickImportFileButton();
-    persesDashboardsPage.closeSuccessAlert();
+    persesDashboardsPage.closeAlert();
 
     cy.log(`4.6 Assert dashboard is imported`);
     persesDashboardsPage.shouldBeLoadedEditionMode('Testing Perses dashboard - YAML');

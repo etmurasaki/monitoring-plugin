@@ -287,7 +287,6 @@ export const persesDashboardsPage = {
       case 'Save':
         cy.bySemanticElement('button', 'Save').scrollIntoView().should('be.visible').click({ force: true });
         persesDashboardsPage.clickSaveDashboardButton();
-        persesDashboardsPage.closeSuccessAlert();
         break;
       case 'Cancel':
         cy.byTestID(persesDashboardDataTestIDs.cancelButtonToolbar).scrollIntoView().should('be.visible').click({ force: true });
@@ -456,8 +455,8 @@ export const persesDashboardsPage = {
     cy.byDataTestID(persesMUIDataTestIDs.panelHeader).find('h6').filter(`:contains("${panel}")`).should('have.length', amount);
   },
 
-  closeSuccessAlert: () => {
-    cy.log('persesDashboardsPage.closeSuccessAlert');
+  closeAlert: () => {
+    cy.log('persesDashboardsPage.closeAlert');
     cy.wait(2000);
     cy.get('body').then((body) => {
       if (body.find('h4').length > 0 && body.find('h4').is(':visible')) {

@@ -1,5 +1,5 @@
 import { Classes, IDs, persesAriaLabels } from "../../src/components/data-test";
-import { persesCreateDashboard, persesDashboardsImportDashboard, persesDashboardsModalTitles } from "../fixtures/perses/constants";
+import { persesDashboardsImportDashboard, persesDashboardsModalTitles } from "../fixtures/perses/constants";
 
 export const persesImportDashboardsPage = {
 
@@ -100,12 +100,12 @@ export const persesImportDashboardsPage = {
 
   assertFailedToMigrateGrafanaDashboard: () => {
     cy.log('persesImportDashboardsPage.assertFailedToMigrateGrafanaDashboard');
-    cy.byPFRole('dialog').find('h4').contains(persesDashboardsImportDashboard.DIALOG_FAILED_TO_MIGRATE_GRAFANA_DASHBOARD).should('be.visible');
+    cy.get('h4').contains(persesDashboardsImportDashboard.DIALOG_FAILED_TO_MIGRATE_GRAFANA_DASHBOARD).should('be.visible');
   },
 
   assertDuplicatedDashboardError: () => {
     cy.log('persesImportDashboardsPage.assertDuplicatedDashboardError');
-    cy.byPFRole('dialog').find('h4').contains(persesDashboardsImportDashboard.DIALOG_DUPLICATED_DASHBOARD_ERROR).should('be.visible');
+    cy.get('h4').contains(persesDashboardsImportDashboard.DIALOG_DUPLICATED_DASHBOARD_ERROR).should('be.visible');
   },
 
   dismissDuplicatedDashboardError: () => {

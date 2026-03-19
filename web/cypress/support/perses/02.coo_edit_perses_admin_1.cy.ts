@@ -1,9 +1,7 @@
-import { IDs, editPersesDashboardsAddPanel } from '../../../src/components/data-test';
 import { persesDashboardsAddListPanelType, persesDashboardsDashboardDropdownCOO, persesDashboardsDashboardDropdownPersesDev } from '../../fixtures/perses/constants';
 import { commonPages } from '../../views/common';
 import { listPersesDashboardsPage } from "../../views/perses-dashboards-list-dashboards";
 import { persesDashboardsPage } from '../../views/perses-dashboards';
-import { persesDashboardsEditDatasources } from '../../views/perses-dashboards-edit-datasources';
 import { persesDashboardsEditVariables } from '../../views/perses-dashboards-edit-variables';
 import { persesDashboardsPanel } from '../../views/perses-dashboards-panel';
 import { persesDashboardsPanelGroup } from '../../views/perses-dashboards-panelgroup';

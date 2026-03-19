@@ -48,12 +48,12 @@ export function testCOORBACPersesTestsDevUser3(perspective: PerspectiveConfig) {
     listPersesDashboardsPage.assertCreateButtonIsEnabled();
     listPersesDashboardsPage.clickCreateButton();
     persesCreateDashboardsPage.createDashboardShouldBeLoaded();
-    persesCreateDashboardsPage.assertProjectDropdown('empty-namespace3');
     persesCreateDashboardsPage.assertProjectNotExistsInDropdown('openshift-cluster-observability-operator');
     persesCreateDashboardsPage.assertProjectNotExistsInDropdown('observ-test');
     persesCreateDashboardsPage.assertProjectNotExistsInDropdown('perses-dev');
     persesCreateDashboardsPage.assertProjectNotExistsInDropdown('openshift-monitoring');
     persesCreateDashboardsPage.assertProjectNotExistsInDropdown('empty-namespace4');
+    persesCreateDashboardsPage.assertProjectDropdown('empty-namespace3');
     persesCreateDashboardsPage.createDashboardDialogCancelButton();
 
     cy.log(`1.3. empty-namespace3 validation - Dashboard search - empty state`);
@@ -76,12 +76,12 @@ export function testCOORBACPersesTestsDevUser3(perspective: PerspectiveConfig) {
     listPersesDashboardsPage.assertCreateButtonIsEnabled();
     listPersesDashboardsPage.clickCreateButton();
     persesCreateDashboardsPage.createDashboardShouldBeLoaded();
-    persesCreateDashboardsPage.assertProjectDropdown('empty-namespace3');
     persesCreateDashboardsPage.assertProjectNotExistsInDropdown('openshift-cluster-observability-operator');
     persesCreateDashboardsPage.assertProjectNotExistsInDropdown('observ-test');
     persesCreateDashboardsPage.assertProjectNotExistsInDropdown('perses-dev');
     persesCreateDashboardsPage.assertProjectNotExistsInDropdown('openshift-monitoring');
     persesCreateDashboardsPage.assertProjectNotExistsInDropdown('empty-namespace4');
+    persesCreateDashboardsPage.assertProjectDropdown('empty-namespace3');
     persesCreateDashboardsPage.createDashboardDialogCancelButton();
 
   });
@@ -101,11 +101,11 @@ export function testCOORBACPersesTestsDevUser3(perspective: PerspectiveConfig) {
     listPersesDashboardsPage.assertCreateButtonIsEnabled();
     listPersesDashboardsPage.clickCreateButton();
     persesCreateDashboardsPage.createDashboardShouldBeLoaded();
-    persesCreateDashboardsPage.assertProjectDropdown('empty-namespace3');
     persesCreateDashboardsPage.assertProjectNotExistsInDropdown('observ-test');
     persesCreateDashboardsPage.assertProjectNotExistsInDropdown('perses-dev');
     persesCreateDashboardsPage.assertProjectNotExistsInDropdown('openshift-monitoring');
     persesCreateDashboardsPage.assertProjectNotExistsInDropdown('empty-namespace4');
+    persesCreateDashboardsPage.assertProjectDropdown('empty-namespace3');
     persesCreateDashboardsPage.createDashboardDialogCancelButton();
 
     cy.log(`2.4 change namespace to openshift-monitoring`);
@@ -317,12 +317,12 @@ export function testCOORBACPersesTestsDevUser3(perspective: PerspectiveConfig) {
     listPersesDashboardsPage.clickDuplicateOption();
 
     cy.log(`6.5. Assert project dropdown options`);
-    listPersesDashboardsPage.assertDuplicateProjectDropdownExists('empty-namespace3');
     listPersesDashboardsPage.assertDuplicateProjectDropdownNotExists('openshift-cluster-observability-operator');
     listPersesDashboardsPage.assertDuplicateProjectDropdownNotExists('openshift-monitoring');
     listPersesDashboardsPage.assertDuplicateProjectDropdownNotExists('observ-test');
     listPersesDashboardsPage.assertDuplicateProjectDropdownNotExists('perses-dev');
     listPersesDashboardsPage.assertDuplicateProjectDropdownNotExists('empty-namespace4');
+    listPersesDashboardsPage.assertDuplicateProjectDropdownExists('empty-namespace3');
 
     cy.log(`6.6. Enter new dashboard name`);
     listPersesDashboardsPage.duplicateDashboardEnterName(duplicatedDashboardName);
@@ -340,7 +340,6 @@ export function testCOORBACPersesTestsDevUser3(perspective: PerspectiveConfig) {
     listPersesDashboardsPage.clickKebabIcon();
     listPersesDashboardsPage.clickDeleteOption();
     listPersesDashboardsPage.deleteDashboardDeleteButton();
-    persesDashboardsPage.closeSuccessAlert();
     listPersesDashboardsPage.emptyState();
     listPersesDashboardsPage.countDashboards('0');
 
@@ -393,12 +392,12 @@ export function testCOORBACPersesTestsDevUser3(perspective: PerspectiveConfig) {
     persesImportDashboardsPage.assertPersesDashboardDetected();
 
     cy.log(`8.4. Verify project dropdown options`);
-    persesImportDashboardsPage.assertProjectDropdown('empty-namespace3');
     persesImportDashboardsPage.assertProjectNotExistsInDropdown('openshift-cluster-observability-operator');
     persesImportDashboardsPage.assertProjectNotExistsInDropdown('observ-test');
     persesImportDashboardsPage.assertProjectNotExistsInDropdown('perses-dev');
     persesImportDashboardsPage.assertProjectNotExistsInDropdown('openshift-monitoring');
     persesImportDashboardsPage.assertProjectNotExistsInDropdown('empty-namespace4');
+    persesImportDashboardsPage.assertProjectDropdown('empty-namespace3');
     persesImportDashboardsPage.clickCancelButton();
   
     cy.log(`8.5 change namespace to openshift-monitoring`);
@@ -433,7 +432,6 @@ export function testCOORBACPersesTestsDevUser3(perspective: PerspectiveConfig) {
 
     cy.log(`9.5. Import dashboard`);
     persesImportDashboardsPage.clickImportFileButton();
-    persesDashboardsPage.closeSuccessAlert();
 
     cy.log(`9.6. Assert dashboard is imported`);
     persesDashboardsPage.shouldBeLoadedEditionMode('Testing Perses dashboard - YAML');
